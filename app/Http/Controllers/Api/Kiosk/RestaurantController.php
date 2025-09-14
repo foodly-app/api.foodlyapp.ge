@@ -8,11 +8,16 @@ use Illuminate\Http\Request;
 class RestaurantController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Get restaurants list for Kiosk platform
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return response()->json([
+            'status' => 'success',
+            'platform' => 'kiosk',
+            'locale' => app()->getLocale(),
+            'message' => 'Kiosk restaurants endpoint working'
+        ]);
     }
 
     /**

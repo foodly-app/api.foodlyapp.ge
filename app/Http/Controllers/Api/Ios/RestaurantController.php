@@ -8,11 +8,16 @@ use Illuminate\Http\Request;
 class RestaurantController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Get restaurants list for iOS platform
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return response()->json([
+            'status' => 'success',
+            'platform' => 'ios',
+            'locale' => app()->getLocale(),
+            'message' => 'iOS restaurants endpoint working'
+        ]);
     }
 
     /**
