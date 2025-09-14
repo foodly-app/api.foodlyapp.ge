@@ -9,11 +9,12 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function login(Request $request, string $client)
+    public function login(Request $request)
     {
         $data = $request->validate([
             'email'       => ['required', 'email'],
             'password'    => ['required', 'string'],
+            'client'      => ['required', 'string', 'in:kiosk,android,ios,website'],
             'device_name' => ['nullable', 'string'],
         ]);
 
@@ -23,12 +24,7 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid credentials'], 422);
         }
 
-        // განსაზღვრავს ability-ს (kiosk, android, ios)
-        $allowedClients = ['kiosk', 'android', 'ios'];
-        if (! in_array($client, $allowedClients)) {
-            return response()->json(['message' => 'Invalid client type'], 400);
-        }
-
+        $client = $data['client'];
         $token = $user->createToken(
             $data['device_name'] ?? "{$client}-device",
             [$client]
@@ -38,6 +34,11 @@ class AuthController extends Controller
             'token' => $token,
             'type'  => 'Bearer',
             'client' => $client,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+            ]
         ]);
     }
 

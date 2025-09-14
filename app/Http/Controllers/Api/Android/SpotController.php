@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\Android;
 
 use App\Http\Controllers\Controller;
+use App\Models\Spot\Spot;
+use App\Http\Resources\Spot\SpotResource;
 use Illuminate\Http\Request;
 
 class SpotController extends Controller
@@ -12,12 +14,22 @@ class SpotController extends Controller
      */
     public function index(Request $request)
     {
-        return response()->json([
-            'status' => 'success',
-            'platform' => 'android',
-            'locale' => app()->getLocale(),
-            'message' => 'Android spots endpoint working'
-        ]);
+        try {
+            $spots = Spot::where('status', 'active')
+                ->orderBy('rank', 'asc')
+                ->paginate(12);
+
+            if ($spots->isEmpty()) {
+                return response()->json(['error' => 'No spots found'], 404);
+            }
+
+            return SpotResource::collection($spots);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to fetch spots',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
