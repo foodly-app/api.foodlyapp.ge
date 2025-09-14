@@ -8,11 +8,31 @@ use Illuminate\Http\Request;
 class SpotController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Get spots list for iOS platform
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return response()->json([
+            'status' => 'success',
+            'platform' => 'ios',
+            'locale' => app()->getLocale(),
+            'message' => 'iOS spots endpoint working'
+        ]);
+    }
+
+    /**
+     * Test endpoint for iOS platform (no authentication required)
+     */
+    public function test(Request $request)
+    {
+        return response()->json([
+            'status' => 'success',
+            'platform' => 'ios',
+            'locale' => app()->getLocale(),
+            'message' => 'iOS spots test endpoint working - no auth required',
+            'timestamp' => now()->toISOString(),
+            'endpoint' => 'GET /api/ios/spots/test'
+        ]);
     }
 
     /**

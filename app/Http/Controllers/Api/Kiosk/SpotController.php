@@ -8,11 +8,31 @@ use Illuminate\Http\Request;
 class SpotController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Get spots list for Kiosk platform
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return response()->json([
+            'status' => 'success',
+            'platform' => 'kiosk',
+            'locale' => app()->getLocale(),
+            'message' => 'Kiosk spots endpoint working'
+        ]);
+    }
+
+    /**
+     * Test endpoint for Kiosk platform (no authentication required)
+     */
+    public function test(Request $request)
+    {
+        return response()->json([
+            'status' => 'success',
+            'platform' => 'kiosk',
+            'locale' => app()->getLocale(),
+            'message' => 'Kiosk spots test endpoint working - no auth required',
+            'timestamp' => now()->toISOString(),
+            'endpoint' => 'GET /api/kiosk/spots/test'
+        ]);
     }
 
     /**

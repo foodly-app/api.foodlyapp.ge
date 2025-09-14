@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Android;
+namespace App\Http\Controllers\Api\Website;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,30 +8,30 @@ use Illuminate\Http\Request;
 class SpotController extends Controller
 {
     /**
-     * Get spots list for Android platform
+     * Get spots list for Website platform
      */
     public function index(Request $request)
     {
         return response()->json([
             'status' => 'success',
-            'platform' => 'android',
+            'platform' => 'website',
             'locale' => app()->getLocale(),
-            'message' => 'Android spots endpoint working'
+            'message' => 'Website spots endpoint working'
         ]);
     }
 
     /**
-     * Test endpoint for Android platform (no authentication required)
+     * Test endpoint for Website platform (no authentication required)
      */
     public function test(Request $request)
     {
         return response()->json([
             'status' => 'success',
-            'platform' => 'android',
+            'platform' => 'website',
             'locale' => app()->getLocale(),
-            'message' => 'Android spots test endpoint working - no auth required',
+            'message' => 'Website spots test endpoint working - no auth required',
             'timestamp' => now()->toISOString(),
-            'endpoint' => 'GET /api/android/spots/test'
+            'endpoint' => 'GET /api/website/spots/test'
         ]);
     }
 
