@@ -24,27 +24,18 @@ Route::prefix('auth')->group(function () {
 
 // Protected Routes (require authentication)
 Route::middleware('auth:sanctum')->group(function () {
-    
+
     // User Management
     Route::prefix('user')->group(function () {
         Route::get('/', [AuthController::class, 'user']);
         Route::post('/refresh-token', [AuthController::class, 'refreshToken']);
     });
-    
+
     // Authentication
     Route::post('/auth/logout', [AuthController::class, 'logout']);
-    
+
     // Legacy route (for backward compatibility)
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-});
-
-// Database Test Routes (for development)
-Route::prefix('test')->group(function () {
-    Route::get('/db-connection', [DatabaseTestController::class, 'testConnection'])
-        ->name('test.db.connection');
-    
-    Route::get('/table/{tableName}', [DatabaseTestController::class, 'testTableStructure'])
-        ->name('test.table.structure');
 });
