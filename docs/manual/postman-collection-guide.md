@@ -1,53 +1,209 @@
-# FOODLY API - Postman Collection Guide
+# FOODLY API - Current Documentation
 
-## 📋 Overview
+## 📋 API Overview
 
-მომზადებულია სრული Postman Collection FOODLY API-ისთვის, რომელიც მოიცავს ყველა endpoint-ს authentication-ით, locale testing-ით და automated testing-ით.
+FOODLY API არის multi-platform food delivery API with Laravel Sanctum authentication და locale support. 
 
-## 📁 Files
+## 🏗 Current API Structure
 
-- `FOODLY-API-Collection.postman_collection.json` - მთავარი Collection
-- `FOODLY-API-Environment.postman_environment.json` - Environment Variables
+### 🔐 Authentication Endpoints
+```
+POST /api/auth/register     - User registration
+POST /api/auth/login        - User login (returns token)
+POST /api/auth/logout       - User logout (requires auth)
+GET  /api/user/             - Get user profile (requires auth)
+POST /api/user/refresh-token - Refresh auth token (requires auth)
+```
 
-## 🚀 Setup Instructions
+### � Platform-Specific Public Test Endpoints
+```
+GET /api/kiosk/test    - Kiosk platform test (Georgian locale focus)
+GET /api/android/test  - Android platform test (English locale focus)  
+GET /api/ios/test      - iOS platform test (Russian locale focus)
+```
 
-### 1. Import Collection
-1. გახსენით Postman
-2. File → Import
-3. ატვირთეთ `FOODLY-API-Collection.postman_collection.json`
+### 🔒 Platform-Specific Protected Endpoints (Require Auth)
+```
+GET /api/kiosk/restaurants    - Kiosk restaurants (requires Sanctum token)
+GET /api/android/restaurants  - Android restaurants (requires Sanctum token)
+GET /api/ios/restaurants      - iOS restaurants (requires Sanctum token)
+```
 
-### 2. Import Environment
-1. Environments tab-ში
-2. Import → ატვირთეთ `FOODLY-API-Environment.postman_environment.json`
-3. აირჩიეთ "FOODLY API - Local Environment"
+### 🛠 Database Testing Endpoints
+```
+GET /api/test/db-connection   - Database connectivity test
+GET /api/test/table/{table}   - Table structure inspection
+```
 
-### 3. Environment Variables Setup
+## 🌐 Locale Support
+
+### Supported Locales
+- `ka` - Georgian (ქართული)
+- `en` - English  
+- `ru` - Russian (Русский)
+- `tr` - Turkish (Türkçe)
+
+### Locale Detection Methods
+1. **Query Parameter**: `?locale=ka`
+2. **Accept-Language Header**: `Accept-Language: ka-GE,ka;q=0.9,en;q=0.8`
+3. **Fallback**: Unsupported locales default to `en`
+
+## 🔑 Authentication Flow
+
+### Laravel Sanctum Token-Based Auth
+```bash
+# 1. Register
+POST /api/auth/register
+{
+  "name": "Test User",
+  "email": "test@foodlyapp.ge", 
+  "password": "password123",
+  "password_confirmation": "password123"
+}
+
+# 2. Login (get token)
+POST /api/auth/login
+{
+  "email": "test@foodlyapp.ge",
+  "password": "password123"
+}
+# Response: {"data": {"token": "1|xxxxx"}}
+
+# 3. Use token in headers
+Authorization: Bearer 1|xxxxx
+```
+
+## � Platform Architecture
+
+### Platform Separation
+- **Kiosk**: Georgian-focused, restaurant kiosk systems
+- **Android**: English-focused, mobile Android app
+- **iOS**: Russian-focused, mobile iOS app
+
+### Controllers Structure
+```
+app/Http/Controllers/Api/
+├── AuthController.php              (Authentication)
+├── Kiosk/RestaurantController.php  (Kiosk platform)
+├── Android/RestaurantController.php (Android platform)
+└── Ios/RestaurantController.php    (iOS platform)
+```
+
+### Routes Structure
+```
+routes/
+├── api.php           (Main auth routes)
+├── Api/kiosk.php     (Kiosk platform routes)
+├── Api/android.php   (Android platform routes)
+└── Api/ios.php       (iOS platform routes)
+```
+
+## 🔧 Middleware Configuration
+
+### SetLocale Middleware
+- Detects locale from query params or headers
+- Sets application locale for responses
+- Applied to all platform endpoints
+
+### Authentication Middleware
+- `auth:sanctum` - Protects restaurant endpoints
+- Public test endpoints bypass authentication
+
+## 📊 Response Format
+
+### Standard API Response
 ```json
 {
-  "base_url": "http://api.foodlyapp.test",
-  "auth_token": "",  // იავტომატურად იფილება login-ის შემდეგ
-  "test_user_email": "test@foodlyapp.ge",
-  "test_user_password": "password123"
+  "status": "success",
+  "platform": "kiosk|android|ios", 
+  "locale": "ka|en|ru|tr",
+  "message": "Localized message",
+  "timestamp": "2025-09-15T10:30:00.000000Z",
+  "data": {},
+  "endpoint": "GET /api/platform/endpoint"
 }
 ```
 
-## 📚 Collection Structure
+### Authentication Response
+```json
+{
+  "status": "success",
+  "message": "User logged in successfully",
+  "data": {
+    "token": "1|xxxxxxxxxxxxx",
+    "user": {
+      "id": 1,
+      "name": "Test User",
+      "email": "test@foodlyapp.ge"
+    }
+  }
+}
+```
 
-### 🔐 Authentication
-- **Register User** - ახალი user-ის რეგისტრაცია
-- **Login User** - Authentication token მიღება (auto-saves token)
-- **Get User Profile** - User profile მონაცემები
-- **Logout User** - Session-ის დასრულება
+## 🧪 Testing
 
-### 🔓 Public Test Endpoints
-- **Kiosk Test (Georgian)** - Kiosk platform test locale=ka
-- **Android Test (English)** - Android platform test locale=en
-- **iOS Test (Russian)** - iOS platform test locale=ru
-- **Locale Fallback Test** - Unsupported locale fallback testing
+### Manual Testing URLs
+```bash
+# Public test endpoints (no auth)
+curl "http://api.foodlyapp.test/api/kiosk/test?locale=ka"
+curl "http://api.foodlyapp.test/api/android/test?locale=en" 
+curl "http://api.foodlyapp.test/api/ios/test?locale=ru"
 
-### 🔒 Protected Endpoints
-- **Kiosk Restaurants** - Authentication required
-- **Android Restaurants** - Authentication required
+# Protected endpoints (requires auth token)
+curl -H "Authorization: Bearer TOKEN" \
+     "http://api.foodlyapp.test/api/kiosk/restaurants?locale=ka"
+```
+
+### Development Environment
+- **Laravel Herd**: Local development server
+- **Domain**: `api.foodlyapp.test`
+- **Database**: MySQL (api_db)
+- **PHP**: 8.x with Laravel 12.x
+
+## 📁 Postman Collection (Optional)
+
+### Files Available
+- `FOODLY-API-Collection.postman_collection.json` - Complete collection
+- `FOODLY-API-Environment.postman_environment.json` - Environment setup
+
+### Import Instructions
+1. Open Postman
+2. File → Import both JSON files  
+3. Select "FOODLY API - Local Environment"
+4. Run "Login User" to auto-save auth token
+5. Test any endpoint!
+
+## 🔍 Troubleshooting
+
+### Common Issues
+1. **401 Unauthorized**: Login first to get auth token
+2. **Locale not working**: Check query param `?locale=ka` or Accept-Language header
+3. **Routes not found**: Clear route cache: `php artisan route:clear`
+
+### Debug Commands
+```bash
+php artisan route:list           # View all routes
+php artisan route:list --path=api # View API routes only
+php artisan config:clear         # Clear config cache
+```
+
+## 🎯 Current Status
+
+### ✅ Completed Features
+- Authentication system with Sanctum tokens
+- Multi-platform architecture (Kiosk/Android/iOS)
+- Locale detection and translation support  
+- Test endpoints for all platforms
+- Database connectivity testing
+- Comprehensive documentation
+
+### 🚀 Ready for Development
+API infrastructure მზადაა production development-ისთვის:
+- Add actual restaurant data models
+- Implement menu management  
+- Add order processing
+- Integrate payment systems
+- Add real-time features
 - **iOS Restaurants** - Authentication required
 
 ### 🛠 Database Testing
