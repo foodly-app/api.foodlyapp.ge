@@ -1,52 +1,70 @@
 # API Documentation - Laravel Sanctum Authentication
 
-## 🔐 Authentication Endpoints
+## 🔐 Authentication System Overview
+
+### Updated: September 15, 2025
+
+The FOODLY API uses Laravel Sanctum for API token authentication with multi-platform support.
 
 ### Base URL
 ```
-http://api.foodlyapp.test/api
+http://api.foodlyapp.ge.test/api
+Production: http://api.foodlyapp.ge/api
 ```
 
 ---
 
-## 📝 Public Endpoints (No Authentication Required)
+## 📝 Authentication Endpoints
 
-### 1. Register User
+### 1. User Login
+**POST** `/auth/login`
+
+**Description:** Authenticates user and returns platform-specific token
+
+**Request Body:**
+```json
+{
+  "email": "user@example.com",
+  "password": "password123",
+  "client": "kiosk",
+  "device_name": "optional-device-name"
+}
+```
+
+**Client Types:**
+- `kiosk` - Restaurant kiosk terminals
+- `android` - Android mobile application  
+- `ios` - iOS mobile application
+- `website` - Web application
+
+**Response (200):**
+```json
+{
+  "token": "119|8EHdWh4kRkS2PP7k47itO65LrPHQZ5kE53Jx6brkb2a9e5ce",
+  "type": "Bearer",
+  "client": "kiosk",
+  "user": {
+    "id": 2,
+    "name": "David Gakhokia", 
+    "email": "gakhokia.david@gmail.com"
+  }
+}
+```
+
+**Error Response (422):**
+```json
+{
+  "message": "Invalid credentials"
+}
+```
+
+### 2. User Registration
 **POST** `/auth/register`
 
 **Request Body:**
 ```json
 {
   "name": "John Doe",
-  "email": "john@example.com",
-  "password": "password123",
-  "password_confirmation": "password123"
-}
-```
-
-**Response (201):**
-```json
-{
-  "status": "success",
-  "message": "User registered successfully",
-  "data": {
-    "user": {
-      "id": 1,
-      "name": "John Doe",
-      "email": "john@example.com",
-      "created_at": "2025-09-14T10:00:00Z"
-    },
-    "token": "1|xxxxxxxxxxxxxxxx"
-  }
-}
-```
-
-### 2. Login User
-**POST** `/auth/login`
-
-**Request Body:**
-```json
-{
   "email": "john@example.com",
   "password": "password123"
 }
