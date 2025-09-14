@@ -2,10 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
+use App\Http\Controllers\DatabaseTestController;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+
+// Database test route (for easy browser access)
+Route::get('/test/db', [DatabaseTestController::class, 'testConnection'])->name('test.db');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

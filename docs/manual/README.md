@@ -44,12 +44,12 @@ FoodlyApp.ge API - მულტი-ენოვანი food delivery აპლ
 
 ## 📋 შემდეგი ეტაპები (დაგეგმილი)
 
-### Phase 1: Database Architecture
-- [ ] User Model-ის გაფართოება
-- [ ] Food Categories Models (translatable)
-- [ ] Restaurant Models (translatable)  
-- [ ] Food Items Models (translatable)
-- [ ] Order Management Models
+### Phase 1: Database Connection & Data Extraction
+- [ ] არსებული მონაცემთა ბაზის კონფიგურაცია
+- [ ] Database connection setup
+- [ ] მონაცემთა ანალიზი და სტრუქტურის შესწავლა
+- [ ] Data extraction tools/scripts შექმნა
+- [ ] არსებული ინფორმაციის mapping
 
 ### Phase 2: API Architecture
 - [ ] Authentication System (Sanctum)
