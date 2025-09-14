@@ -23,6 +23,10 @@ return Application::configure(basePath: dirname(__DIR__))
             Route::prefix('api/ios')
                 ->middleware(['api'])
                 ->group(base_path('routes/Api/ios.php'));
+
+            Route::prefix('api/website')
+                ->middleware(['api'])
+                ->group(base_path('routes/Api/website.php'));
         },
     )
     ->withMiddleware(function (Middleware $middleware) {

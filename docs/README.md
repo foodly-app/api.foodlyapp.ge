@@ -21,6 +21,7 @@
 - **Kiosk Platform** - Georgian locale focus (Restaurant kiosks)
 - **Android Platform** - English locale focus (Mobile app)
 - **iOS Platform** - Russian locale focus (Mobile app)
+- **Website Platform** - Multi-locale support (Website)
 
 #### 🌐 Internationalization
 - Locale detection from query parameters
@@ -50,6 +51,7 @@ POST /api/user/refresh-token - Token refresh (requires auth)
 GET /api/kiosk/test    - Kiosk platform test
 GET /api/android/test  - Android platform test
 GET /api/ios/test      - iOS platform test
+GET /api/website/test  - Website platform test
 ```
 
 #### Platform Restaurant Endpoints (Protected)
@@ -57,6 +59,7 @@ GET /api/ios/test      - iOS platform test
 GET /api/kiosk/restaurants    - Kiosk restaurants (auth required)
 GET /api/android/restaurants  - Android restaurants (auth required)
 GET /api/ios/restaurants      - iOS restaurants (auth required)
+GET /api/website/restaurants  - Website restaurants (auth required)
 ```
 
 #### Database Testing
@@ -80,13 +83,15 @@ app/Http/Controllers/Api/
 ├── AuthController.php              # Authentication logic
 ├── Kiosk/RestaurantController.php  # Kiosk platform
 ├── Android/RestaurantController.php # Android platform
-└── Ios/RestaurantController.php    # iOS platform
+├── Ios/RestaurantController.php    # iOS platform
+└── Website/RestaurantController.php    # Website platform
 
 routes/
 ├── api.php           # Main authentication routes
 ├── Api/kiosk.php     # Kiosk platform routes
 ├── Api/android.php   # Android platform routes
-└── Api/ios.php       # iOS platform routes
+├── Api/ios.php       # iOS platform routes
+└── Api/website.php       # Website platform routes
 
 app/Http/Middleware/
 └── SetLocale.php     # Custom locale detection middleware
@@ -119,6 +124,7 @@ php artisan db:seed
 curl "http://api.foodlyapp.test/api/kiosk/test?locale=ka"
 curl "http://api.foodlyapp.test/api/android/test?locale=en" 
 curl "http://api.foodlyapp.test/api/ios/test?locale=ru"
+curl "http://api.foodlyapp.test/api/website/test?locale=en"
 
 # Authentication flow
 curl -X POST "http://api.foodlyapp.test/api/auth/login" \

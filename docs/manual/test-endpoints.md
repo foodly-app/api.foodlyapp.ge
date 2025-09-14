@@ -77,6 +77,28 @@ curl "http://api.foodlyapp.test/api/ios/test?locale=ru"
 }
 ```
 
+#### 🌐 Website Platform Test
+```http
+GET /api/website/test
+```
+
+**Example Request:**
+```bash
+curl "http://api.foodlyapp.test/api/website/test?locale=en"
+```
+
+**Response:**
+```json
+{
+  "status": "success",
+  "platform": "website",
+  "locale": "en",
+  "message": "Website test endpoint working - English locale",
+  "timestamp": "2025-09-15T10:30:00.000000Z",
+  "endpoint": "GET /api/website/test"
+}
+```
+
 ## 🔒 Protected Endpoints (Authentication Required)
 
 ### Restaurant Endpoints
@@ -84,6 +106,7 @@ curl "http://api.foodlyapp.test/api/ios/test?locale=ru"
 GET /api/kiosk/restaurants     # Requires Sanctum token
 GET /api/android/restaurants   # Requires Sanctum token  
 GET /api/ios/restaurants       # Requires Sanctum token
+GET /api/website/restaurants       # Requires Sanctum token
 ```
 
 **Authentication Example:**
@@ -164,6 +187,7 @@ curl "http://api.foodlyapp.test/api/kiosk/test?locale=fr"
 | Kiosk    | `/api/kiosk/test` | `ka` | ❌ No |
 | Android  | `/api/android/test` | `en` | ❌ No |
 | iOS      | `/api/ios/test` | `ru` | ❌ No |
+| Website  | `/api/website/test` | `en` | ❌ No |
 
 ## ✅ Expected Behavior
 
@@ -226,6 +250,7 @@ php artisan config:clear
 curl "http://api.foodlyapp.test/api/kiosk/test"
 curl "http://api.foodlyapp.test/api/android/test"  
 curl "http://api.foodlyapp.test/api/ios/test"
+curl "http://api.foodlyapp.test/api/website/test"
 ```
 
 ### Locale Verification  
@@ -234,6 +259,7 @@ curl "http://api.foodlyapp.test/api/ios/test"
 curl "http://api.foodlyapp.test/api/kiosk/test?locale=ka"
 curl "http://api.foodlyapp.test/api/android/test?locale=en"
 curl "http://api.foodlyapp.test/api/ios/test?locale=ru"
+curl "http://api.foodlyapp.test/api/website/test?locale=en"
 ```
 
 ### Error Testing
