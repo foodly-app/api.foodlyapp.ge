@@ -21,6 +21,21 @@ class RestaurantController extends Controller
     }
 
     /**
+     * Test endpoint for Android platform (no authentication required)
+     */
+    public function test(Request $request)
+    {
+        return response()->json([
+            'status' => 'success',
+            'platform' => 'android',
+            'locale' => app()->getLocale(),
+            'message' => 'Android test endpoint working - no auth required',
+            'timestamp' => now()->toISOString(),
+            'endpoint' => 'GET /api/android/test'
+        ]);
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)

@@ -41,10 +41,10 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logout(Request $request)
-    {
-        $request->user()->currentAccessToken()->delete();
+    // public function logout(Request $request)
+    // {
+    //     $request->user()->currentAccessToken()->delete();
 
-        return response()->json(['message' => 'Logged out']);
-    }
+    //     return response()->json(['message' => 'Logged out']);
+    // }
 }

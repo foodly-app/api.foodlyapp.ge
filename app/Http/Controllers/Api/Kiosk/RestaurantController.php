@@ -21,6 +21,21 @@ class RestaurantController extends Controller
     }
 
     /**
+     * Test endpoint for Kiosk platform (no authentication required)
+     */
+    public function test(Request $request)
+    {
+        return response()->json([
+            'status' => 'success',
+            'platform' => 'kiosk',
+            'locale' => app()->getLocale(),
+            'message' => 'Kiosk test endpoint working - no auth required',
+            'timestamp' => now()->toISOString(),
+            'endpoint' => 'GET /api/kiosk/test'
+        ]);
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
