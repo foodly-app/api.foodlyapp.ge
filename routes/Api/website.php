@@ -14,7 +14,7 @@ Route::middleware([SetLocale::class])->group(function () {
 // Protected routes (require authentication)
 Route::middleware(['auth:sanctum', SetLocale::class])->group(function () {
     Route::prefix('restaurants')
-        ->name('restaurants.')
+        ->name('website.restaurants.')
         ->controller(RestaurantController::class)
         ->group(function () {
             Route::get('/', 'index')->name('index');
@@ -22,7 +22,7 @@ Route::middleware(['auth:sanctum', SetLocale::class])->group(function () {
         });
     
     Route::prefix('spots')
-        ->name('spots.')
+        ->name('website.spots.')
         ->controller(SpotController::class)
         ->group(function () {
             Route::get('/', 'index')->name('index');

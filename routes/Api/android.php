@@ -14,14 +14,14 @@ Route::middleware([SetLocale::class])->group(function () {
 // Protected routes (require authentication)
 Route::middleware(['auth:sanctum', SetLocale::class])->group(function () {
     Route::prefix('restaurants')
-        ->name('restaurants.')
+        ->name('android.restaurants.')
         ->controller(RestaurantController::class)
         ->group(function () {
             Route::get('/', 'index')->name('index');
         });
     
     Route::prefix('spots')
-        ->name('spots.')
+        ->name('android.spots.')
         ->controller(SpotController::class)
         ->group(function () {
             Route::get('/', 'index')->name('index');
