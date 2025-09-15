@@ -10,6 +10,8 @@ use App\Models\Spot\Spot;
 use App\Models\Dish\Dish;
 use App\Models\Space\Space;
 use App\Models\City\City;
+use App\Models\Place\Place;
+use App\Models\Table\Table;
 
 class Restaurant extends Model
 {
@@ -140,5 +142,15 @@ class Restaurant extends Model
             ->withTimestamps();
     }
 
+    // One-to-many relationships
+    public function places()
+    {
+        return $this->hasMany(Place::class)->active()->orderBy('rank', 'asc');
+    }
+
+    public function tables()
+    {
+        return $this->hasMany(Table::class)->active()->orderBy('rank', 'asc');
+    }
 
 }

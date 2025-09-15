@@ -8,6 +8,12 @@ use App\Models\Restaurant\Restaurant;
 use App\Http\Resources\Restaurant\RestaurantResource;
 use App\Http\Resources\Restaurant\RestaurantShortResource;
 use App\Http\Resources\Restaurant\RestaurantDetailsResource;
+use App\Http\Resources\Place\PlaceResource;
+use App\Http\Resources\Place\PlaceShortResource;
+use App\Http\Resources\Table\TableResource;
+use App\Http\Resources\Table\TableShortResource;
+use App\Models\Place\Place;
+use App\Models\Table\Table;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class RestaurantController extends Controller
@@ -128,26 +134,56 @@ class RestaurantController extends Controller
     }
 
     /**
-     * Get restaurant with places
+     * Get places (სივრცეები) for a restaurant by slug
      */
-    public function showByPlaces(string $slug)
+    public function showByPlaces(Request $request, string $slug)
     {
         try {
             $restaurant = Restaurant::where('slug', $slug)
                 ->where('status', Restaurant::STATUS_ACTIVE)
-                ->with('places')
                 ->firstOrFail();
+
+            $query = Place::with(['restaurant', 'translations'])
+                ->byRestaurant($restaurant->id)
+                ->active();
+
+            // Sorting
+            $sortBy = $request->get('sort_by', 'rank_asc');
+            switch ($sortBy) {
+                case 'rank_desc':
+                    $query->orderByRank('desc');
+                    break;
+                case 'name_asc':
+                    $query->orderBy('name', 'asc');
+                    break;
+                case 'name_desc':
+                    $query->orderBy('name', 'desc');
+                    break;
+                default:
+                    $query->orderByRank('asc');
+                    break;
+            }
+
+            $places = $query->paginate($request->get('per_page', 15));
 
             return response()->json([
                 'data' => [
                     'restaurant' => RestaurantShortResource::make($restaurant),
-                    'places' => $restaurant->places ?? []
-                ]
+                    'places' => PlaceShortResource::collection($places->items())
+                ],
+                'meta' => [
+                    'current_page' => $places->currentPage(),
+                    'last_page' => $places->lastPage(),
+                    'per_page' => $places->perPage(),
+                    'total' => $places->total(),
+                    'from' => $places->firstItem(),
+                    'to' => $places->lastItem(),
+                ],
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Restaurant not found'], 404);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to fetch Restaurant', 'message' => $e->getMessage()], 500);
+            return response()->json(['error' => 'Failed to fetch places', 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -159,16 +195,22 @@ class RestaurantController extends Controller
         try {
             $restaurant = Restaurant::where('slug', $slug)
                 ->where('status', Restaurant::STATUS_ACTIVE)
-                ->with('places')
                 ->firstOrFail();
 
-            // Find place by id or slug
-            $place = $restaurant->places
-                ->where('id', $placeIdentifier)
-                ->first()
-                ?? $restaurant->places
+            $place = Place::with(['restaurant', 'translations'])
                 ->where('slug', $placeIdentifier)
+                ->byRestaurant($restaurant->id)
+                ->active()
                 ->first();
+
+            if (!$place) {
+                // Try by ID if slug doesn't work
+                $place = Place::with(['restaurant', 'translations'])
+                    ->where('id', $placeIdentifier)
+                    ->byRestaurant($restaurant->id)
+                    ->active()
+                    ->first();
+            }
 
             if (!$place) {
                 return response()->json(['error' => 'Place not found'], 404);
@@ -177,7 +219,7 @@ class RestaurantController extends Controller
             return response()->json([
                 'data' => [
                     'restaurant' => RestaurantShortResource::make($restaurant),
-                    'place' => $place
+                    'place' => new PlaceResource($place)
                 ]
             ]);
         } catch (ModelNotFoundException $e) {
@@ -195,19 +237,29 @@ class RestaurantController extends Controller
         try {
             $restaurant = Restaurant::where('slug', $slug)
                 ->where('status', Restaurant::STATUS_ACTIVE)
-                ->with(['places.tables'])
                 ->firstOrFail();
 
-            $placeModel = $restaurant->places->where('slug', $place)->first();
+            $placeModel = Place::with(['restaurant', 'translations'])
+                ->where('slug', $place)
+                ->byRestaurant($restaurant->id)
+                ->active()
+                ->first();
+
             if (!$placeModel) {
                 return response()->json(['error' => 'Place not found'], 404);
             }
 
+            $tables = Table::with(['restaurant', 'place', 'translations'])
+                ->byPlace($placeModel->id)
+                ->available()
+                ->orderByRank('asc')
+                ->get();
+
             return response()->json([
                 'data' => [
                     'restaurant' => RestaurantShortResource::make($restaurant),
-                    'place' => $placeModel,
-                    'tables' => $placeModel->tables ?? []
+                    'place' => PlaceShortResource::make($placeModel),
+                    'tables' => TableShortResource::collection($tables)
                 ]
             ]);
         } catch (ModelNotFoundException $e) {
@@ -225,16 +277,32 @@ class RestaurantController extends Controller
         try {
             $restaurant = Restaurant::where('slug', $slug)
                 ->where('status', Restaurant::STATUS_ACTIVE)
-                ->with(['places.tables'])
                 ->firstOrFail();
 
-            $placeModel = $restaurant->places->where('slug', $place)->first();
+            $placeModel = Place::with(['restaurant', 'translations'])
+                ->where('slug', $place)
+                ->byRestaurant($restaurant->id)
+                ->active()
+                ->first();
+
             if (!$placeModel) {
                 return response()->json(['error' => 'Place not found'], 404);
             }
 
-            $tableModel = $placeModel->tables->where('id', $table)->first()
-                ?? $placeModel->tables->where('slug', $table)->first();
+            $tableModel = Table::with(['restaurant', 'place', 'translations'])
+                ->where('slug', $table)
+                ->byPlace($placeModel->id)
+                ->available()
+                ->first();
+
+            if (!$tableModel) {
+                // Try by ID if slug doesn't work
+                $tableModel = Table::with(['restaurant', 'place', 'translations'])
+                    ->where('id', $table)
+                    ->byPlace($placeModel->id)
+                    ->available()
+                    ->first();
+            }
 
             if (!$tableModel) {
                 return response()->json(['error' => 'Table not found'], 404);
@@ -243,8 +311,8 @@ class RestaurantController extends Controller
             return response()->json([
                 'data' => [
                     'restaurant' => RestaurantShortResource::make($restaurant),
-                    'place' => $placeModel,
-                    'table' => $tableModel
+                    'place' => PlaceShortResource::make($placeModel),
+                    'table' => new TableResource($tableModel)
                 ]
             ]);
         } catch (ModelNotFoundException $e) {

@@ -9,6 +9,8 @@ use App\Http\Controllers\Api\Website\CuisineController;
 use App\Http\Controllers\Api\Website\DishController;
 use App\Http\Controllers\Api\Website\MenuCategoryController;
 use App\Http\Controllers\Api\Website\MenuItemController;
+use App\Http\Controllers\Api\Website\PlaceController;
+use App\Http\Controllers\Api\Website\TableController;
 use App\Http\Controllers\Api\Website\CityController;
 
 // Public routes (no authentication required)
@@ -124,6 +126,33 @@ Route::middleware([SetLocale::class])->group(function () {
             Route::get('/slug/{slug}', 'showBySlug')->name('show.slug'); // კონკრეტული მენიუ ელემენტი slug-ით
             Route::get('/restaurant/{slug}', 'getByRestaurant')->name('restaurant'); // რესტორნის მენიუ ელემენტები
             Route::get('/category/{slug}', 'getByCategory')->name('category'); // კატეგორიის მენიუ ელემენტები
+        });
+
+    Route::prefix('places')
+        ->name('website.places.')
+        ->controller(PlaceController::class)
+        ->group(function () {
+            Route::get('/', 'index')->name('index'); // ყველა ადგილი
+            Route::get('/featured', 'getFeatured')->name('featured'); // რჩეული ადგილები
+            Route::get('/search', 'search')->name('search'); // ადგილების ძიება
+            Route::get('/{id}', 'show')->name('show'); // კონკრეტული ადგილი ID-ით
+            Route::get('/slug/{slug}', 'showBySlug')->name('show.slug'); // კონკრეტული ადგილი slug-ით
+            Route::get('/restaurant/{restaurantId}', 'getByRestaurant')->name('restaurant'); // რესტორნის ადგილები
+            Route::get('/restaurant/slug/{restaurantSlug}', 'getByRestaurantSlug')->name('restaurant.slug'); // რესტორნის ადგილები slug-ით
+        });
+
+    Route::prefix('tables')
+        ->name('website.tables.')
+        ->controller(TableController::class)
+        ->group(function () {
+            Route::get('/', 'index')->name('index'); // ყველა მაგიდა
+            Route::get('/available', 'getAvailable')->name('available'); // ხელმისაწვდომი მაგიდები
+            Route::get('/search', 'search')->name('search'); // მაგიდების ძიება
+            Route::get('/{id}', 'show')->name('show'); // კონკრეტული მაგიდა ID-ით
+            Route::get('/slug/{slug}', 'showBySlug')->name('show.slug'); // კონკრეტული მაგიდა slug-ით
+            Route::get('/restaurant/{restaurantId}', 'getByRestaurant')->name('restaurant'); // რესტორნის მაგიდები
+            Route::get('/restaurant/slug/{restaurantSlug}', 'getByRestaurantSlug')->name('restaurant.slug'); // რესტორნის მაგიდები slug-ით
+            Route::get('/place/{placeId}', 'getByPlace')->name('place'); // ადგილის მაგიდები
         });
 });
 
