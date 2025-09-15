@@ -2,12 +2,10 @@
 
 namespace App\Services\Reservation;
 
-use App\Models\Restaurant;
-use App\Models\Place;
-use App\Models\Reservation;
+use App\Models\Restaurant\Restaurant;
+use App\Models\Reservation\Reservation;
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
-
+use Illuminate\Support\Facades\Log;
 class AvailabilityService
 {
     public function generateAvailableSlots($model, string $reservationDate, string $dayOfWeek): array

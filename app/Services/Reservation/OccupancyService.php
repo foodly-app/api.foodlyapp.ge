@@ -2,9 +2,12 @@
 
 namespace App\Services\Reservation;
 
-use App\Models\Reservation;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use App\Models\Table\Table;
+use App\Models\Place\Place;
+use App\Models\Restaurant\Restaurant;
+use App\Models\Reservation\Reservation;
 
 class OccupancyService
 {
@@ -16,18 +19,18 @@ class OccupancyService
         $reservations = Reservation::where(function ($query) use ($restaurantId) {
             $query->where(function ($q) use ($restaurantId) {
                 $q->where('type', 'restaurant')
-                    ->where('reservable_type', \App\Models\Restaurant::class)
+                    ->where('reservable_type', Restaurant::class)
                     ->where('reservable_id', $restaurantId);
             })
                 ->orWhere(function ($q) use ($restaurantId) {
                     $q->where('type', 'place')
-                        ->whereHasMorph('reservable', [\App\Models\Place::class], function ($q2) use ($restaurantId) {
+                        ->whereHasMorph('reservable', [Place::class], function ($q2) use ($restaurantId) {
                             $q2->where('restaurant_id', $restaurantId);
                         });
                 })
                 ->orWhere(function ($q) use ($restaurantId) {
                     $q->where('type', 'table')
-                        ->whereHasMorph('reservable', [\App\Models\Table::class], function ($q2) use ($restaurantId) {
+                        ->whereHasMorph('reservable', [Table::class], function ($q2) use ($restaurantId) {
                             $q2->whereHas('place', function ($q3) use ($restaurantId) {
                                 $q3->where('restaurant_id', $restaurantId);
                             });
