@@ -13,9 +13,10 @@
   - 🍽️ Restaurant endpoints for all platforms
 
 ### 🌍 Environment Files
-- **`FOODLY-API-Locale.postman_environment.json`** - Local development (ka locale)
-- **`FOODLY-API-Production.postman_environment.json`** - Production server (en locale)
-- **`FOODLY-API-Staging.postman_environment.json`** - Staging/Testing (ka locale)
+- **`FOODLY-API-Development.postman_environment.json`** - Local development (localhost:8000)
+- **`FOODLY-API-Locale.postman_environment.json`** - Local testing (api.foodlyapp.ge.test)
+- **`FOODLY-API-Staging.postman_environment.json`** - Staging server (staging-api.foodlyapp.ge)
+- **`FOODLY-API-Production.postman_environment.json`** - Production server (api.foodlyapp.ge)
 
 ## 🎯 Quick Import Guide
 
@@ -27,9 +28,10 @@
 
 ### Step 2: Import Environment
 Choose one environment based on your needs:
-- **Locale** - For local development testing
+- **Development** - For local development (localhost:8000)
+- **Locale** - For local testing with .test domain
+- **Staging** - For pre-production testing on staging server
 - **Production** - For live API testing
-- **Staging** - For staging environment
 
 1. Click **Import** button again
 2. Select desired environment file
@@ -42,6 +44,15 @@ Choose one environment based on your needs:
 4. All other requests now work automatically!
 
 ## 🔧 Environment Variables
+
+### 🌍 Environment Comparison
+
+| Environment | URL | Purpose | When to Use |
+|-------------|-----|---------|-------------|
+| **Development** | `http://localhost:8000` | Local Laravel server | 👨‍💻 Active development, code testing |
+| **Locale** | `https://api.foodlyapp.ge.test` | Local testing domain | 🧪 Local environment with real domain |
+| **Staging** | `https://staging.foodlyapp.ge` | Pre-production server | 🚀 Final testing before production |
+| **Production** | `https://api.foodlyapp.ge` | Live production API | 🌐 Real users, live data |
 
 ### Auto-Set Variables (after login)
 - `auth_token` - Bearer token for API calls
