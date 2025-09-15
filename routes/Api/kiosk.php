@@ -25,7 +25,7 @@ Route::middleware(['auth:sanctum', SetLocale::class])->group(function () {
         ->controller(SpotController::class)
         ->group(function () {
             Route::get('/', 'index')->name('index');
-            Route::get('/slug/{slug}', 'showBySlug')->name('showBySlug');
+            Route::get('/{slug}', 'showBySlug')->name('showBySlug');
             Route::get('/{slug}/restaurants', 'restaurantsBySpot')->name('restaurants');
             Route::get('/{slug}/restaurants/top10', 'top10RestaurantsBySpot')->name('restaurants.top10');
         });

@@ -486,6 +486,222 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Kiosk Spots - List All",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response is successful', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has spots data', function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.data).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/kiosk/spots?locale=ka",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"kiosk",
+								"spots"
+							],
+							"query": [
+								{
+									"key": "locale",
+									"value": "ka"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Kiosk Spots - Get by Slug",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response is successful', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has spot data', function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.data).to.be.an('object');",
+									"    pm.expect(response.data.slug).to.exist;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/kiosk/spots/{{spot_slug}}?locale=ka",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"kiosk",
+								"spots",
+								"{{spot_slug}}"
+							],
+							"query": [
+								{
+									"key": "locale",
+									"value": "ka"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Kiosk Spots - Restaurants by Spot",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response is successful', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has restaurants data', function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.data).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/kiosk/spots/{{spot_slug}}/restaurants?locale=ka",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"kiosk",
+								"spots",
+								"{{spot_slug}}",
+								"restaurants"
+							],
+							"query": [
+								{
+									"key": "locale",
+									"value": "ka"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Kiosk Spots - Top 10 Restaurants by Spot",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response is successful', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has restaurants data', function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.data).to.be.an('array');",
+									"    pm.expect(response.data.length).to.be.at.most(10);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/kiosk/spots/{{spot_slug}}/restaurants/top10?locale=ka",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"kiosk",
+								"spots",
+								"{{spot_slug}}",
+								"restaurants",
+								"top10"
+							],
+							"query": [
+								{
+									"key": "locale",
+									"value": "ka"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
