@@ -19,8 +19,27 @@ Route::middleware([SetLocale::class])->group(function () {
         ->name('website.restaurants.')
         ->controller(RestaurantController::class)
         ->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/{id}', 'show')->name('show');
+            Route::get('/', 'index')->name('index'); // აჩვენებს ყველა რესტორანს
+            Route::get('/{slug}', 'showBySlug')->name('show'); // აჩვენებს კონკრეტულ რესტორანს slug-ით
+            Route::get('/{slug}/details', 'showDetails')->name('details'); // დეტალები კონკრეტული რესტორნისთვის
+            
+            // Places
+            Route::get('/{slug}/places', 'showByPlaces')->name('places'); // ადგილები კონკრეტული რესტორნისთვის
+            Route::get('/{slug}/place/{place}', 'showByPlace')->name('place.show'); // კონკრეტული ადგილის დეტალები
+
+            Route::get('/{slug}/place/{place}/tables', 'showTablesInPlace')->name('place.tables');
+            Route::get('/{slug}/place/{place}/table/{table}', 'showTableInPlace')->name('place.table.show');
+            Route::get('/{slug}/{place}/{table}', 'showTableInPlace')->name('place.table.show.short');
+
+            // Tables
+            Route::get('/{slug}/tables', 'showByTables')->name('tables'); // მაგიდები კონკრეტული რესტორნისთვის
+            Route::get('/{slug}/table/{table}', 'showTable')->name('table.show'); // მაგიდის დეტალები კონკრეტული რესტორნისთვის
+            
+            // Menu
+            Route::get('/{slug}/menu/categories', 'menuCategories')->name('menu.categories'); // მენიუ კატეგორები კონკრეტული რესტორნისთვის
+            Route::get('/{slug}/menu/items', 'menuItems')->name('menu.items'); // მენიუ ელემენტები კონკრეტული რესტორნისთვის
+            Route::get('/{slug}/menu', 'showMenu')->name('menu'); // მენიუ კონკრეტული რესტორნისთვის
+            Route::get('/{slug}/full-menu', 'showFullMenu')->name('full-menu'); // სრული მენიუ კონკრეტული რესტორნისთვის
         });
 
     Route::prefix('spots')

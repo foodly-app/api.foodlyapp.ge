@@ -5,7 +5,7 @@ namespace App\Http\Resources\Restaurant;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RestaurantResource extends JsonResource
+class RestaurantDetailsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -21,13 +21,12 @@ class RestaurantResource extends JsonResource
                 'id' => $this->id,
                 'slug' => $this->slug,
                 'status' => $this->status,
-                'rank' => $this->rank,
-                'logo' => $this->logo,
-                'image' => $this->image,
-                'video' => $this->video,
                 'name' => $this->name,
                 'description' => $this->description,
                 'address' => $this->address,
+                'logo' => $this->logo,
+                'image' => $this->image,
+                'video' => $this->video,
                 'phone' => $this->phone,
                 'whatsapp' => $this->whatsapp,
                 'email' => $this->email,
@@ -45,7 +44,6 @@ class RestaurantResource extends JsonResource
                 'reservation_type' => $this->reservation_type,
                 'qr_code_image' => $this->qr_code_image,
                 'qr_code_link' => $this->qr_code_link,
-                'version' => $this->version,
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,
             ];
@@ -55,7 +53,6 @@ class RestaurantResource extends JsonResource
             'id' => $this->id,
             'slug' => $this->slug,
             'status' => $this->status,
-            'rank' => $this->rank,
             'logo' => $this->logo,
             'image' => $this->image,
             'video' => $this->video,
@@ -76,7 +73,6 @@ class RestaurantResource extends JsonResource
             'reservation_type' => $this->reservation_type,
             'qr_code_image' => $this->qr_code_image,
             'qr_code_link' => $this->qr_code_link,
-            'version' => $this->version,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
 
