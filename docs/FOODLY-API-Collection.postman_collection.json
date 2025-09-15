@@ -368,340 +368,375 @@
 			"name": "🔒 Protected Endpoints",
 			"item": [
 				{
-					"name": "Kiosk Restaurants",
-					"event": [
+					"name": "🏢 Kiosk Platform",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Response requires authentication', function () {",
-									"    if (pm.response.code === 401) {",
-									"        pm.expect(pm.response.json().message).to.include('Unauthenticated');",
-									"    } else if (pm.response.code === 200) {",
-									"        const response = pm.response.json();",
-									"        pm.expect(response.platform).to.eql('kiosk');",
-									"    }",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{auth_token}}"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/api/kiosk/restaurants?locale=ka",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"kiosk",
-								"restaurants"
-							],
-							"query": [
+							"name": "📍 Spots",
+							"item": [
 								{
-									"key": "locale",
-									"value": "ka"
+									"name": "Get All Spots",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test('Response is successful', function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test('Response has spots data', function () {",
+													"    const response = pm.response.json();",
+													"    pm.expect(response.data).to.be.an('array');",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{auth_token}}"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/api/kiosk/spots?locale=ka",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"kiosk",
+												"spots"
+											],
+											"query": [
+												{
+													"key": "locale",
+													"value": "ka"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Spot by Slug",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test('Response is successful', function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test('Response has spot data', function () {",
+													"    const response = pm.response.json();",
+													"    pm.expect(response.data).to.be.an('object');",
+													"    pm.expect(response.data.slug).to.exist;",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{auth_token}}"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/api/kiosk/spots/{{spot_slug}}?locale=ka",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"kiosk",
+												"spots",
+												"{{spot_slug}}"
+											],
+											"query": [
+												{
+													"key": "locale",
+													"value": "ka"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Restaurants by Spot",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test('Response is successful', function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test('Response has restaurants data', function () {",
+													"    const response = pm.response.json();",
+													"    pm.expect(response.data).to.be.an('array');",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{auth_token}}"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/api/kiosk/spots/{{spot_slug}}/restaurants?locale=ka",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"kiosk",
+												"spots",
+												"{{spot_slug}}",
+												"restaurants"
+											],
+											"query": [
+												{
+													"key": "locale",
+													"value": "ka"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Top 10 Restaurants by Spot",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test('Response is successful', function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test('Response has restaurants data', function () {",
+													"    const response = pm.response.json();",
+													"    pm.expect(response.data).to.be.an('array');",
+													"    pm.expect(response.data.length).to.be.at.most(10);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{auth_token}}"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/api/kiosk/spots/{{spot_slug}}/restaurants/top10?locale=ka",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"kiosk",
+												"spots",
+												"{{spot_slug}}",
+												"restaurants",
+												"top10"
+											],
+											"query": [
+												{
+													"key": "locale",
+													"value": "ka"
+												}
+											]
+										}
+									},
+									"response": []
 								}
 							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Android Restaurants",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{auth_token}}"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/api/android/restaurants?locale=en",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"android",
-								"restaurants"
-							],
-							"query": [
-								{
-									"key": "locale",
-									"value": "en"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "iOS Restaurants",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{auth_token}}"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/api/ios/restaurants?locale=ru",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"ios",
-								"restaurants"
-							],
-							"query": [
-								{
-									"key": "locale",
-									"value": "ru"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Kiosk Spots - List All",
-					"event": [
+						},
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Response is successful', function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test('Response has spots data', function () {",
-									"    const response = pm.response.json();",
-									"    pm.expect(response.data).to.be.an('array');",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{auth_token}}"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/api/kiosk/spots?locale=ka",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"kiosk",
-								"spots"
-							],
-							"query": [
+							"name": "🍽️ Restaurants",
+							"item": [
 								{
-									"key": "locale",
-									"value": "ka"
+									"name": "Get All Restaurants",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test('Response requires authentication', function () {",
+													"    if (pm.response.code === 401) {",
+													"        pm.expect(pm.response.json().message).to.include('Unauthenticated');",
+													"    } else if (pm.response.code === 200) {",
+													"        const response = pm.response.json();",
+													"        pm.expect(response.platform).to.eql('kiosk');",
+													"    }",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{auth_token}}"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/api/kiosk/restaurants?locale=ka",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"kiosk",
+												"restaurants"
+											],
+											"query": [
+												{
+													"key": "locale",
+													"value": "ka"
+												}
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "Kiosk Spots - Get by Slug",
-					"event": [
+					"name": "📱 Android Platform",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Response is successful', function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test('Response has spot data', function () {",
-									"    const response = pm.response.json();",
-									"    pm.expect(response.data).to.be.an('object');",
-									"    pm.expect(response.data.slug).to.exist;",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{auth_token}}"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/api/kiosk/spots/{{spot_slug}}?locale=ka",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"kiosk",
-								"spots",
-								"{{spot_slug}}"
-							],
-							"query": [
+							"name": "🍽️ Restaurants",
+							"item": [
 								{
-									"key": "locale",
-									"value": "ka"
+									"name": "Get All Restaurants",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{auth_token}}"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/api/android/restaurants?locale=en",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"android",
+												"restaurants"
+											],
+											"query": [
+												{
+													"key": "locale",
+													"value": "en"
+												}
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "Kiosk Spots - Restaurants by Spot",
-					"event": [
+					"name": "🍎 iOS Platform",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Response is successful', function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test('Response has restaurants data', function () {",
-									"    const response = pm.response.json();",
-									"    pm.expect(response.data).to.be.an('array');",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{auth_token}}"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/api/kiosk/spots/{{spot_slug}}/restaurants?locale=ka",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"kiosk",
-								"spots",
-								"{{spot_slug}}",
-								"restaurants"
-							],
-							"query": [
+							"name": "🍽️ Restaurants",
+							"item": [
 								{
-									"key": "locale",
-									"value": "ka"
+									"name": "Get All Restaurants",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{auth_token}}"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/api/ios/restaurants?locale=ru",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"ios",
+												"restaurants"
+											],
+											"query": [
+												{
+													"key": "locale",
+													"value": "ru"
+												}
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "Kiosk Spots - Top 10 Restaurants by Spot",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Response is successful', function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test('Response has restaurants data', function () {",
-									"    const response = pm.response.json();",
-									"    pm.expect(response.data).to.be.an('array');",
-									"    pm.expect(response.data.length).to.be.at.most(10);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{auth_token}}"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/api/kiosk/spots/{{spot_slug}}/restaurants/top10?locale=ka",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"kiosk",
-								"spots",
-								"{{spot_slug}}",
-								"restaurants",
-								"top10"
-							],
-							"query": [
-								{
-									"key": "locale",
-									"value": "ka"
-								}
-							]
-						}
-					},
-					"response": []
+					]
 				}
 			]
 		},
