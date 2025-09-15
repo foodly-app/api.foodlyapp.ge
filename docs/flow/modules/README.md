@@ -63,6 +63,8 @@ docs/
 │       │   └── SPACES-MODULE-INSTRUCTIONS.md
 │       ├── cuisines/
 │       │   └── CUISINES-MODULE-INSTRUCTIONS.md
+│       ├── dishes/
+│       │   └── DISHES-MODULE-INSTRUCTIONS.md
 │       └── README.md (this file)
 ├── Collection/                     # Postman collections
 ├── manual/                         # Manual documentation
@@ -126,6 +128,25 @@ GET /api/{platform}/cuisines
 GET /api/{platform}/cuisines/{slug}
 GET /api/{platform}/cuisines/{slug}/restaurants
 GET /api/{platform}/cuisines/{slug}/restaurants/top10
+```
+
+### 🍛 Dishes Module  
+**Purpose**: Restaurant discovery by specific dishes and menu items  
+**File**: [`docs/flow/modules/dishes/DISHES-MODULE-INSTRUCTIONS.md`](./dishes/DISHES-MODULE-INSTRUCTIONS.md)
+
+**Key Features:**
+- Dish-based restaurant discovery
+- Rich dish descriptions with translations
+- Restaurant associations with ranking
+- Currently implemented for Website platform only
+- Consistent API structure for future platform expansion
+
+**Endpoints:**
+```
+GET /api/website/dishes
+GET /api/website/dishes/{slug}
+GET /api/website/dishes/{slug}/restaurants
+GET /api/website/dishes/{slug}/restaurants/top10
 ```
 
 ---
