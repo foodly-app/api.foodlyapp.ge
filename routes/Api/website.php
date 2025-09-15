@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\Website\SpotController;
 use App\Http\Controllers\Api\Website\SpaceController;
 use App\Http\Controllers\Api\Website\CuisineController;
 use App\Http\Controllers\Api\Website\DishController;
+use App\Http\Controllers\Api\Website\MenuCategoryController;
+use App\Http\Controllers\Api\Website\MenuItemController;
 use App\Http\Controllers\Api\Website\CityController;
 
 // Public routes (no authentication required)
@@ -35,11 +37,13 @@ Route::middleware([SetLocale::class])->group(function () {
             Route::get('/{slug}/tables', 'showByTables')->name('tables'); // მაგიდები კონკრეტული რესტორნისთვის
             Route::get('/{slug}/table/{table}', 'showTable')->name('table.show'); // მაგიდის დეტალები კონკრეტული რესტორნისთვის
             
-            // Menu
-            Route::get('/{slug}/menu/categories', 'menuCategories')->name('menu.categories'); // მენიუ კატეგორები კონკრეტული რესტორნისთვის
-            Route::get('/{slug}/menu/items', 'menuItems')->name('menu.items'); // მენიუ ელემენტები კონკრეტული რესტორნისთვის
-            Route::get('/{slug}/menu', 'showMenu')->name('menu'); // მენიუ კონკრეტული რესტორნისთვის
-            Route::get('/{slug}/full-menu', 'showFullMenu')->name('full-menu'); // სრული მენიუ კონკრეტული რესტორნისთვის
+            // Menu - ჰიერარქიული სტრუქტურა
+            Route::get('/{slug}/menu', 'showMenu')->name('menu'); // რესტორნის სრული მენიუ სტრუქტურა
+            Route::get('/{slug}/menu/categories', 'menuCategories')->name('menu.categories'); // რესტორნის მენიუ კატეგორიების სია
+            Route::get('/{slug}/menu/category/{categorySlug}', 'menuCategory')->name('menu.category'); // კონკრეტული კატეგორია
+            Route::get('/{slug}/menu/category/{categorySlug}/items', 'menuCategoryItems')->name('menu.category.items'); // კატეგორიის მენიუ ელემენტები
+            Route::get('/{slug}/menu/item/{itemSlug}', 'menuItem')->name('menu.item'); // კონკრეტული მენიუ ელემენტი
+            Route::get('/{slug}/menu/items', 'menuItems')->name('menu.items'); // ყველა მენიუ ელემენტი რესტორნისთვის
         });
 
     Route::prefix('spots')
@@ -91,6 +95,35 @@ Route::middleware([SetLocale::class])->group(function () {
             Route::get('/{slug}', 'showBySlug')->name('showBySlug');
             Route::get('/{slug}/restaurants', 'restaurantsByCity')->name('restaurants');
             Route::get('/{slug}/restaurants/top10', 'top10RestaurantsByCity')->name('restaurants.top10');
+        });
+
+    Route::prefix('menu-categories')
+        ->name('website.menu-categories.')
+        ->controller(MenuCategoryController::class)
+        ->group(function () {
+            Route::get('/', 'index')->name('index'); // ყველა მენიუ კატეგორია
+            Route::get('/hierarchy', 'getHierarchy')->name('hierarchy'); // ჰიერარქიული სტრუქტურა (ხე)
+            Route::get('/{id}', 'show')->name('show'); // კონკრეტული კატეგორია ID-ით
+            Route::get('/slug/{slug}', 'showBySlug')->name('show.slug'); // კონკრეტული კატეგორია slug-ით
+            Route::get('/{id}/children', 'getChildren')->name('children'); // კატეგორიის შვილები
+            Route::get('/{id}/breadcrumb', 'getBreadcrumb')->name('breadcrumb'); // ნავიგაციის გზა
+            Route::get('/restaurant/{slug}', 'getByRestaurant')->name('restaurant'); // რესტორნის კატეგორიები
+            Route::get('/restaurant/{slug}/items', 'getRestaurantCategoryItems')->name('restaurant.items'); // რესტორნის კატეგორიები მენიუ ელემენტებით
+        });
+
+    Route::prefix('menu-items')
+        ->name('website.menu-items.')
+        ->controller(MenuItemController::class)
+        ->group(function () {
+            Route::get('/', 'index')->name('index'); // ყველა მენიუ ელემენტი
+            Route::get('/featured', 'getFeatured')->name('featured'); // რჩეული/პოპულარული მენიუ ელემენტები
+            Route::get('/discounted', 'getDiscounted')->name('discounted'); // ფასდაკლებული მენიუ ელემენტები
+            Route::get('/vegan', 'getVegan')->name('vegan'); // ვეგანური მენიუ ელემენტები
+            Route::get('/gluten-free', 'getGlutenFree')->name('gluten-free'); // გლუტენის გარეშე მენიუ ელემენტები
+            Route::get('/{id}', 'show')->name('show'); // კონკრეტული მენიუ ელემენტი ID-ით
+            Route::get('/slug/{slug}', 'showBySlug')->name('show.slug'); // კონკრეტული მენიუ ელემენტი slug-ით
+            Route::get('/restaurant/{slug}', 'getByRestaurant')->name('restaurant'); // რესტორნის მენიუ ელემენტები
+            Route::get('/category/{slug}', 'getByCategory')->name('category'); // კატეგორიის მენიუ ელემენტები
         });
 });
 
