@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\Website\SpotController;
 // Public routes (no authentication required)
 Route::middleware([SetLocale::class])->group(function () {
     Route::get('/test', [RestaurantController::class, 'test'])->name('website.test');
-    // Route::get('/spots/test', [SpotController::class, 'test'])->name('website.spots.test');
+    Route::get('/spots/test', [SpotController::class, 'test'])->name('website.spots.test');
     
     Route::prefix('restaurants')
         ->name('website.restaurants.')
@@ -23,10 +23,9 @@ Route::middleware([SetLocale::class])->group(function () {
         ->controller(SpotController::class)
         ->group(function () {
             Route::get('/', 'index')->name('index');
-            Route::post('/', 'store')->name('store');
-            Route::get('/{id}', 'show')->name('show');
-            Route::put('/{id}', 'update')->name('update');
-            Route::delete('/{id}', 'destroy')->name('destroy');
+            Route::get('/{slug}', 'showBySlug')->name('showBySlug');
+            Route::get('/{slug}/restaurants', 'restaurantsBySpot')->name('restaurants');
+            Route::get('/{slug}/restaurants/top10', 'top10RestaurantsBySpot')->name('restaurants.top10');
         });
 });
 

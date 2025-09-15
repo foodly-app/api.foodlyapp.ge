@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "foodly-api-collection-complete",
 		"name": "FOODLY API - Complete Collection",
-		"description": "Complete API collection for FOODLY multi-platform endpoints with authentication, kiosk spots, and all features (September 2025)",
+		"description": "Complete API collection for FOODLY multi-platform endpoints with authentication and spots functionality across all platforms: Kiosk (Georgian), Android (English), iOS (Russian), and Website (all locales) - September 2025",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"auth": {
@@ -663,6 +663,235 @@
 					"name": "📱 Android Platform",
 					"item": [
 						{
+							"name": "📍 Spots",
+							"item": [
+								{
+									"name": "Get All Spots",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test('✅ Response is successful', function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test('📊 Response has spots data', function () {",
+													"    const response = pm.response.json();",
+													"    pm.expect(response.data).to.be.an('array');",
+													"    console.log('📍 Total spots found:', response.data.length);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{auth_token}}"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/api/android/spots?locale=en",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"android",
+												"spots"
+											],
+											"query": [
+												{
+													"key": "locale",
+													"value": "en",
+													"description": "Android platform uses English by default"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Spot by Slug",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test('✅ Response is successful', function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test('📍 Response has spot data', function () {",
+													"    const response = pm.response.json();",
+													"    pm.expect(response.data).to.be.an('object');",
+													"    pm.expect(response.data.slug).to.exist;",
+													"    console.log('📍 Spot found:', response.data.name || response.data.slug);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{auth_token}}"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/api/android/spots/{{spot_slug}}?locale=en",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"android",
+												"spots",
+												"{{spot_slug}}"
+											],
+											"query": [
+												{
+													"key": "locale",
+													"value": "en",
+													"description": "Android platform uses English"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Restaurants by Spot",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test('✅ Response is successful', function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test('🍽️ Response has restaurants data', function () {",
+													"    const response = pm.response.json();",
+													"    pm.expect(response.data).to.be.an('array');",
+													"    console.log('🍽️ Restaurants found:', response.data.length);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{auth_token}}"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/api/android/spots/{{spot_slug}}/restaurants?locale=en",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"android",
+												"spots",
+												"{{spot_slug}}",
+												"restaurants"
+											],
+											"query": [
+												{
+													"key": "locale",
+													"value": "en",
+													"description": "Android platform uses English"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Top 10 Restaurants by Spot",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test('✅ Response is successful', function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test('🔥 Response has top restaurants data', function () {",
+													"    const response = pm.response.json();",
+													"    pm.expect(response.data).to.be.an('array');",
+													"    pm.expect(response.data.length).to.be.at.most(10);",
+													"    console.log('🔥 Top restaurants found:', response.data.length);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{auth_token}}"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/api/android/spots/{{spot_slug}}/restaurants/top10?locale=en",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"android",
+												"spots",
+												"{{spot_slug}}",
+												"restaurants",
+												"top10"
+											],
+											"query": [
+												{
+													"key": "locale",
+													"value": "en",
+													"description": "Android platform uses English"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
 							"name": "🍽️ Restaurants",
 							"item": [
 								{
@@ -708,6 +937,235 @@
 					"name": "🍎 iOS Platform",
 					"item": [
 						{
+							"name": "📍 Spots",
+							"item": [
+								{
+									"name": "Get All Spots",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test('✅ Response is successful', function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test('📊 Response has spots data', function () {",
+													"    const response = pm.response.json();",
+													"    pm.expect(response.data).to.be.an('array');",
+													"    console.log('📍 Total spots found:', response.data.length);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{auth_token}}"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/api/ios/spots?locale=ru",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"ios",
+												"spots"
+											],
+											"query": [
+												{
+													"key": "locale",
+													"value": "ru",
+													"description": "iOS platform supports Russian locale"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Spot by Slug",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test('✅ Response is successful', function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test('📍 Response has spot data', function () {",
+													"    const response = pm.response.json();",
+													"    pm.expect(response.data).to.be.an('object');",
+													"    pm.expect(response.data.slug).to.exist;",
+													"    console.log('📍 Spot found:', response.data.name || response.data.slug);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{auth_token}}"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/api/ios/spots/{{spot_slug}}?locale=ru",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"ios",
+												"spots",
+												"{{spot_slug}}"
+											],
+											"query": [
+												{
+													"key": "locale",
+													"value": "ru",
+													"description": "iOS platform supports Russian locale"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Restaurants by Spot",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test('✅ Response is successful', function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test('🍽️ Response has restaurants data', function () {",
+													"    const response = pm.response.json();",
+													"    pm.expect(response.data).to.be.an('array');",
+													"    console.log('🍽️ Restaurants found:', response.data.length);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{auth_token}}"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/api/ios/spots/{{spot_slug}}/restaurants?locale=ru",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"ios",
+												"spots",
+												"{{spot_slug}}",
+												"restaurants"
+											],
+											"query": [
+												{
+													"key": "locale",
+													"value": "ru",
+													"description": "iOS platform supports Russian locale"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Top 10 Restaurants by Spot",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test('✅ Response is successful', function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test('🔥 Response has top restaurants data', function () {",
+													"    const response = pm.response.json();",
+													"    pm.expect(response.data).to.be.an('array');",
+													"    pm.expect(response.data.length).to.be.at.most(10);",
+													"    console.log('🔥 Top restaurants found:', response.data.length);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{auth_token}}"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/api/ios/spots/{{spot_slug}}/restaurants/top10?locale=ru",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"ios",
+												"spots",
+												"{{spot_slug}}",
+												"restaurants",
+												"top10"
+											],
+											"query": [
+												{
+													"key": "locale",
+													"value": "ru",
+													"description": "iOS platform supports Russian locale"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
 							"name": "🍽️ Restaurants",
 							"item": [
 								{
@@ -739,6 +1197,260 @@
 													"key": "locale",
 													"value": "ru",
 													"description": "iOS platform supports Russian locale"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "🌐 Website Platform",
+					"item": [
+						{
+							"name": "📍 Spots",
+							"item": [
+								{
+									"name": "Get All Spots",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test('✅ Response is successful', function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test('📊 Response has spots data', function () {",
+													"    const response = pm.response.json();",
+													"    pm.expect(response.data).to.be.an('array');",
+													"    console.log('📍 Total spots found:', response.data.length);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/api/website/spots?locale={{locale}}",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"website",
+												"spots"
+											],
+											"query": [
+												{
+													"key": "locale",
+													"value": "{{locale}}",
+													"description": "Website platform supports all locales"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Spot by Slug",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test('✅ Response is successful', function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test('📍 Response has spot data', function () {",
+													"    const response = pm.response.json();",
+													"    pm.expect(response.data).to.be.an('object');",
+													"    pm.expect(response.data.slug).to.exist;",
+													"    console.log('📍 Spot found:', response.data.name || response.data.slug);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/api/website/spots/{{spot_slug}}?locale={{locale}}",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"website",
+												"spots",
+												"{{spot_slug}}"
+											],
+											"query": [
+												{
+													"key": "locale",
+													"value": "{{locale}}",
+													"description": "Website platform supports all locales"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Restaurants by Spot",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test('✅ Response is successful', function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test('🍽️ Response has restaurants data', function () {",
+													"    const response = pm.response.json();",
+													"    pm.expect(response.data).to.be.an('array');",
+													"    console.log('🍽️ Restaurants found:', response.data.length);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/api/website/spots/{{spot_slug}}/restaurants?locale={{locale}}",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"website",
+												"spots",
+												"{{spot_slug}}",
+												"restaurants"
+											],
+											"query": [
+												{
+													"key": "locale",
+													"value": "{{locale}}",
+													"description": "Website platform supports all locales"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Top 10 Restaurants by Spot",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test('✅ Response is successful', function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test('🔥 Response has top restaurants data', function () {",
+													"    const response = pm.response.json();",
+													"    pm.expect(response.data).to.be.an('array');",
+													"    pm.expect(response.data.length).to.be.at.most(10);",
+													"    console.log('🔥 Top restaurants found:', response.data.length);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/api/website/spots/{{spot_slug}}/restaurants/top10?locale={{locale}}",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"website",
+												"spots",
+												"{{spot_slug}}",
+												"restaurants",
+												"top10"
+											],
+											"query": [
+												{
+													"key": "locale",
+													"value": "{{locale}}",
+													"description": "Website platform supports all locales"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "🍽️ Restaurants",
+							"item": [
+								{
+									"name": "Get All Restaurants",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/api/website/restaurants?locale={{locale}}",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"website",
+												"restaurants"
+											],
+											"query": [
+												{
+													"key": "locale",
+													"value": "{{locale}}",
+													"description": "Website platform supports all locales"
 												}
 											]
 										}
