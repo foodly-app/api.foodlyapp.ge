@@ -25,9 +25,8 @@ Route::middleware(['auth:sanctum', SetLocale::class])->group(function () {
         ->controller(SpotController::class)
         ->group(function () {
             Route::get('/', 'index')->name('index');
-            Route::post('/', 'store')->name('store');
-            Route::get('/{id}', 'show')->name('show');
-            Route::put('/{id}', 'update')->name('update');
-            Route::delete('/{id}', 'destroy')->name('destroy');
+            Route::get('/slug/{slug}', 'showBySlug')->name('showBySlug');
+            Route::get('/{slug}/restaurants', 'restaurantsBySpot')->name('restaurants');
+            Route::get('/{slug}/restaurants/top10', 'top10RestaurantsBySpot')->name('restaurants.top10');
         });
 });
