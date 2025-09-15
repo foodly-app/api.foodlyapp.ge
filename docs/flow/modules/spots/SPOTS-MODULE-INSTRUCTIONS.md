@@ -1,4 +1,4 @@
-# 🌌 FOODLY API - Complete Spaces Module Instructions
+# 🎯 FOODLY API - Complete Spots Module Instructions
 
 ## 📋 Table of Contents
 1. [Module Overview](#module-overview)
@@ -17,7 +17,7 @@
 
 ## 📖 Module Overview
 
-The **Spaces Module** provides location-based restaurant discovery functionality across four platforms:
+The **Spots Module** provides location-based restaurant discovery functionality across four platforms:
 - **🏢 Kiosk** (Georgian) - Restaurant terminal systems
 - **📱 Android** (English) - Mobile Android application
 - **🍎 iOS** (Russian) - iOS mobile application
@@ -25,12 +25,12 @@ The **Spaces Module** provides location-based restaurant discovery functionality
 
 ### Key Features
 ✅ **Multi-platform support** with consistent API structure  
-✅ **Internationalization** with translatable space names  
+✅ **Internationalization** with translatable spot names  
 ✅ **Restaurant associations** with ranking and status management  
 ✅ **Slug-based routing** for SEO-friendly URLs  
 ✅ **Pagination support** for large datasets  
 ✅ **Status management** (active, inactive, maintenance)  
-✅ **Top restaurants** feature for each space  
+✅ **Top restaurants** feature for each spot  
 
 ---
 
@@ -41,35 +41,35 @@ The **Spaces Module** provides location-based restaurant discovery functionality
 app/
 ├── Http/
 │   ├── Controllers/Api/
-│   │   ├── Kiosk/SpaceController.php      # Kiosk platform controller
-│   │   ├── Android/SpaceController.php    # Android platform controller
-│   │   ├── Ios/SpaceController.php        # iOS platform controller
-│   │   └── Website/SpaceController.php    # Website platform controller
+│   │   ├── Kiosk/SpotController.php      # Kiosk platform controller
+│   │   ├── Android/SpotController.php    # Android platform controller
+│   │   ├── Ios/SpotController.php        # iOS platform controller
+│   │   └── Website/SpotController.php    # Website platform controller
 │   └── Resources/
-│       ├── Space/SpaceResource.php        # Space API response formatting
+│       ├── Spot/SpotResource.php         # Spot API response formatting
 │       └── Restaurant/RestaurantShortResource.php  # Restaurant response formatting
 ├── Models/
-│   └── Space/
-│       ├── Space.php                      # Main Space model
-│       └── SpaceTranslation.php           # Translation model (auto-generated)
+│   └── Spot/
+│       ├── Spot.php                      # Main Spot model
+│       └── SpotTranslation.php           # Translation model (auto-generated)
 └── Http/Middleware/
-    └── SetLocale.php                      # Locale management middleware
+    └── SetLocale.php                     # Locale management middleware
 
 routes/Api/
-├── kiosk.php                              # Kiosk platform routes
-├── android.php                            # Android platform routes
-├── ios.php                                # iOS platform routes
-└── website.php                            # Website platform routes
+├── kiosk.php                             # Kiosk platform routes
+├── android.php                           # Android platform routes
+├── ios.php                               # iOS platform routes
+└── website.php                           # Website platform routes
 ```
 
 ---
 
 ## 📊 Data Model
 
-### Space Model (`app/Models/Space/Space.php`)
+### Spot Model (`app/Models/Spot/Spot.php`)
 
 ```php
-class Space extends Model
+class Spot extends Model
 {
     use Translatable;
 
@@ -87,7 +87,7 @@ class Space extends Model
     ];
 
     public $translatedAttributes = [
-        'name',           // Space name (translatable)
+        'name',           // Spot name (translatable)
     ];
 
     // Relationships
@@ -101,7 +101,7 @@ class Space extends Model
 
 ### Database Tables
 
-#### `spaces` table
+#### `spots` table
 | Column | Type | Description |
 |--------|------|-------------|
 | `id` | bigint | Primary key |
@@ -113,21 +113,21 @@ class Space extends Model
 | `created_at` | timestamp | Creation time |
 | `updated_at` | timestamp | Last update time |
 
-#### `space_translations` table
+#### `spot_translations` table
 | Column | Type | Description |
 |--------|------|-------------|
 | `id` | bigint | Primary key |
-| `space_id` | bigint | Foreign key to spaces |
+| `spot_id` | bigint | Foreign key to spots |
 | `locale` | varchar(255) | Language code (en, ka, ru, tr) |
-| `name` | varchar(255) | Translated space name |
+| `name` | varchar(255) | Translated spot name |
 
-#### `restaurant_space` (pivot table)
+#### `restaurant_spot` (pivot table)
 | Column | Type | Description |
 |--------|------|-------------|
 | `id` | bigint | Primary key |
 | `restaurant_id` | bigint | Foreign key to restaurants |
-| `space_id` | bigint | Foreign key to spaces |
-| `rank` | integer | Restaurant ranking within space |
+| `spot_id` | bigint | Foreign key to spots |
+| `rank` | integer | Restaurant ranking within spot |
 | `status` | enum | active/inactive |
 | `created_at` | timestamp | Creation time |
 | `updated_at` | timestamp | Last update time |
@@ -142,49 +142,49 @@ Replace `{platform}` with: `kiosk`, `android`, `ios`, or `website`
 
 #### Public Endpoints (No Authentication)
 ```
-GET /api/{platform}/spaces/test           # Platform test endpoint
+GET /api/{platform}/spots/test           # Platform test endpoint
 ```
 
 #### Protected Endpoints (Require Authentication)
 ```
-GET /api/{platform}/spaces                # List all active spaces
-GET /api/{platform}/spaces/{slug}         # Get single space by slug
-GET /api/{platform}/spaces/{slug}/restaurants     # Get all restaurants for space
-GET /api/{platform}/spaces/{slug}/restaurants/top10  # Get top 10 restaurants for space
+GET /api/{platform}/spots                # List all active spots
+GET /api/{platform}/spots/{slug}         # Get single spot by slug
+GET /api/{platform}/spots/{slug}/restaurants     # Get all restaurants for spot
+GET /api/{platform}/spots/{slug}/restaurants/top10  # Get top 10 restaurants for spot
 ```
 
 ### Specific Platform URLs
 
 #### 🏢 Kiosk Platform (Georgian)
 ```
-GET /api/kiosk/spaces
-GET /api/kiosk/spaces/{slug}
-GET /api/kiosk/spaces/{slug}/restaurants
-GET /api/kiosk/spaces/{slug}/restaurants/top10
+GET /api/kiosk/spots
+GET /api/kiosk/spots/{slug}
+GET /api/kiosk/spots/{slug}/restaurants
+GET /api/kiosk/spots/{slug}/restaurants/top10
 ```
 
 #### 📱 Android Platform (English)
 ```
-GET /api/android/spaces
-GET /api/android/spaces/{slug}
-GET /api/android/spaces/{slug}/restaurants
-GET /api/android/spaces/{slug}/restaurants/top10
+GET /api/android/spots
+GET /api/android/spots/{slug}
+GET /api/android/spots/{slug}/restaurants
+GET /api/android/spots/{slug}/restaurants/top10
 ```
 
 #### 🍎 iOS Platform (Russian)
 ```
-GET /api/ios/spaces
-GET /api/ios/spaces/{slug}
-GET /api/ios/spaces/{slug}/restaurants
-GET /api/ios/spaces/{slug}/restaurants/top10
+GET /api/ios/spots
+GET /api/ios/spots/{slug}
+GET /api/ios/spots/{slug}/restaurants
+GET /api/ios/spots/{slug}/restaurants/top10
 ```
 
 #### 🌐 Website Platform (Multi-locale)
 ```
-GET /api/website/spaces
-GET /api/website/spaces/{slug}
-GET /api/website/spaces/{slug}/restaurants
-GET /api/website/spaces/{slug}/restaurants/top10
+GET /api/website/spots
+GET /api/website/spots/{slug}
+GET /api/website/spots/{slug}/restaurants
+GET /api/website/spots/{slug}/restaurants/top10
 ```
 
 ---
@@ -193,22 +193,22 @@ GET /api/website/spaces/{slug}/restaurants/top10
 
 ### Kiosk Platform
 - **Language**: Georgian (ka)
-- **Authentication**: Required for all space endpoints
+- **Authentication**: Required for all spot endpoints
 - **Response**: Georgian translations prioritized
 
 ### Android Platform  
 - **Language**: English (en)
-- **Authentication**: Required for all space endpoints
+- **Authentication**: Required for all spot endpoints
 - **Response**: English translations prioritized
 
 ### iOS Platform
 - **Language**: Russian (ru)
-- **Authentication**: Required for all space endpoints
+- **Authentication**: Required for all spot endpoints
 - **Response**: Russian translations prioritized
 
 ### Website Platform
 - **Language**: Multi-locale support
-- **Authentication**: **NOT REQUIRED** for space endpoints (public access)
+- **Authentication**: **NOT REQUIRED** for spot endpoints (public access)
 - **Response**: Supports locale parameter for dynamic language switching
 
 ---
@@ -237,11 +237,11 @@ GET /api/website/spaces/{slug}/restaurants/top10
 
 ## 📝 Request/Response Examples
 
-### 1. List All Spaces
+### 1. List All Spots
 
 **Request:**
 ```http
-GET /api/kiosk/spaces
+GET /api/kiosk/spots
 Authorization: Bearer {token}
 Accept: application/json
 ```
@@ -252,22 +252,22 @@ Accept: application/json
   "data": [
     {
       "id": 1,
-      "slug": "outdoor-dining",
+      "slug": "tbilisi-center",
       "status": "active",
-      "image": "/images/spaces/outdoor-dining.jpg",
+      "image": "/images/spots/tbilisi-center.jpg",
       "image_link": "https://example.com/image.jpg",
       "translations": [
         {
           "locale": "ka",
-          "name": "ღია ცის ქვეშ"
+          "name": "თბილისის ცენტრი"
         },
         {
           "locale": "en", 
-          "name": "Outdoor Dining"
+          "name": "Tbilisi Center"
         },
         {
           "locale": "ru",
-          "name": "Открытое пространство"
+          "name": "Центр Тбилиси"
         }
       ]
     }
@@ -286,11 +286,11 @@ Accept: application/json
 }
 ```
 
-### 2. Get Single Space by Slug
+### 2. Get Single Spot by Slug
 
 **Request:**
 ```http
-GET /api/android/spaces/outdoor-dining
+GET /api/android/spots/tbilisi-center
 Authorization: Bearer {token}
 Accept: application/json
 ```
@@ -300,21 +300,21 @@ Accept: application/json
 {
   "data": {
     "id": 1,
-    "slug": "outdoor-dining", 
+    "slug": "tbilisi-center", 
     "status": "active",
     "rank": 1,
-    "name": "Outdoor Dining",
-    "image": "/images/spaces/outdoor-dining.jpg",
+    "name": "Tbilisi Center",
+    "image": "/images/spots/tbilisi-center.jpg",
     "image_link": "https://example.com/image.jpg"
   }
 }
 ```
 
-### 3. Get Restaurants by Space
+### 3. Get Restaurants by Spot
 
 **Request:**
 ```http
-GET /api/ios/spaces/outdoor-dining/restaurants
+GET /api/ios/spots/tbilisi-center/restaurants
 Authorization: Bearer {token}
 Accept: application/json
 ```
@@ -341,7 +341,7 @@ Accept: application/json
 
 **Request:**
 ```http
-GET /api/website/spaces/outdoor-dining/restaurants/top10
+GET /api/website/spots/tbilisi-center/restaurants/top10
 Accept: application/json
 ```
 
@@ -367,7 +367,7 @@ Accept: application/json
 
 **Request:**
 ```http
-GET /api/website/spaces?locale=ka
+GET /api/website/spots?locale=ka
 Accept: application/json
 ```
 
@@ -379,9 +379,9 @@ Accept: application/json
       "id": 1,
       "status": "active",
       "rank": 1,
-      "slug": "outdoor-dining",
-      "name": "ღია ცის ქვეშ",
-      "image": "/images/spaces/outdoor-dining.jpg",
+      "slug": "tbilisi-center",
+      "name": "თბილისის ცენტრი",
+      "image": "/images/spots/tbilisi-center.jpg",
       "image_link": "https://example.com/image.jpg"
     }
   ]
@@ -394,24 +394,24 @@ Accept: application/json
 
 ### Common Error Responses
 
-#### 404 - Space Not Found
+#### 404 - Spot Not Found
 ```json
 {
-  "error": "Space not found"
+  "error": "Spot not found"
 }
 ```
 
 #### 404 - No Restaurants Found
 ```json
 {
-  "error": "No restaurants found for this space"
+  "error": "No restaurants found for this spot"
 }
 ```
 
 #### 500 - Server Error
 ```json
 {
-  "error": "Failed to fetch spaces",
+  "error": "Failed to fetch spots",
   "message": "Detailed error message"
 }
 ```
@@ -428,7 +428,7 @@ Accept: application/json
 ## 🧪 Testing with Postman
 
 ### Collection Structure
-The Postman collection should include complete testing for all platforms:
+The Postman collection includes complete testing for all platforms:
 
 ```
 FOODLY API - Complete Collection
@@ -438,32 +438,28 @@ FOODLY API - Complete Collection
 │   ├── Login User (iOS)
 │   └── Logout User
 ├── 🏢 Kiosk Platform
-│   ├── 📍 Spots
-│   └── 🌌 Spaces
-│       ├── List All Spaces
-│       ├── Get Space by Slug
-│       ├── Get Restaurants by Space
+│   └── 📍 Spots
+│       ├── List All Spots
+│       ├── Get Spot by Slug
+│       ├── Get Restaurants by Spot
 │       └── Get Top 10 Restaurants
 ├── 📱 Android Platform  
-│   ├── 📍 Spots
-│   └── 🌌 Spaces
-│       ├── List All Spaces
-│       ├── Get Space by Slug
-│       ├── Get Restaurants by Space
+│   └── 📍 Spots
+│       ├── List All Spots
+│       ├── Get Spot by Slug
+│       ├── Get Restaurants by Spot
 │       └── Get Top 10 Restaurants
 ├── 🍎 iOS Platform
-│   ├── 📍 Spots
-│   └── 🌌 Spaces
-│       ├── List All Spaces
-│       ├── Get Space by Slug
-│       ├── Get Restaurants by Space
+│   └── 📍 Spots
+│       ├── List All Spots
+│       ├── Get Spot by Slug
+│       ├── Get Restaurants by Spot
 │       └── Get Top 10 Restaurants
 └── 🌐 Website Platform
     ├── 📍 Spots
-    ├── 🌌 Spaces
-    │   ├── List All Spaces
-    │   ├── Get Space by Slug
-    │   ├── Get Restaurants by Space
+    │   ├── List All Spots
+    │   ├── Get Spot by Slug
+    │   ├── Get Restaurants by Spot
     │   └── Get Top 10 Restaurants
     └── 🏪 Restaurants
         ├── List All Restaurants
@@ -477,7 +473,7 @@ FOODLY API - Complete Collection
   "test_user_password": "password",
   "auth_token": "{{auth_token}}",
   "user_id": "{{user_id}}",
-  "test_space_slug": "test-space-slug"
+  "test_spot_slug": "test-spot-slug"
 }
 ```
 
@@ -485,32 +481,39 @@ FOODLY API - Complete Collection
 
 ## 💾 Database Structure
 
+### Migration Commands
+```bash
+# Create spots table
+php artisan make:migration create_spots_table
+
+# Create spot translations table  
+php artisan make:migration create_spot_translations_table
+
+# Create restaurant_spot pivot table
+php artisan make:migration create_restaurant_spot_table
+```
+
 ### Sample Data Structure
 ```sql
--- Spaces
-INSERT INTO spaces (slug, rank, status, image, image_link) VALUES
-('outdoor-dining', 1, 'active', '/images/spaces/outdoor-dining.jpg', 'https://example.com/image.jpg'),
-('rooftop-terrace', 2, 'active', '/images/spaces/rooftop-terrace.jpg', null),
-('garden-view', 3, 'active', '/images/spaces/garden-view.jpg', null);
+-- Spots
+INSERT INTO spots (slug, rank, status, image, image_link) VALUES
+('tbilisi-center', 1, 'active', '/images/spots/tbilisi-center.jpg', 'https://example.com/image.jpg'),
+('batumi-boulevard', 2, 'active', '/images/spots/batumi-boulevard.jpg', null);
 
--- Space Translations
-INSERT INTO space_translations (space_id, locale, name) VALUES
-(1, 'ka', 'ღია ცის ქვეშ'),
-(1, 'en', 'Outdoor Dining'),
-(1, 'ru', 'Открытое пространство'),
-(2, 'ka', 'სახურავის ტერასა'),
-(2, 'en', 'Rooftop Terrace'),
-(2, 'ru', 'Террasa на крыше'),
-(3, 'ka', 'ბაღის ხედი'),
-(3, 'en', 'Garden View'),
-(3, 'ru', 'Вид на сад');
+-- Spot Translations
+INSERT INTO spot_translations (spot_id, locale, name) VALUES
+(1, 'ka', 'თბილისის ცენტრი'),
+(1, 'en', 'Tbilisi Center'),
+(1, 'ru', 'Центр Тбилиси'),
+(2, 'ka', 'ბათუმის ბულვარი'),
+(2, 'en', 'Batumi Boulevard'),
+(2, 'ru', 'Батумский бульвар');
 
--- Restaurant-Space Associations
-INSERT INTO restaurant_space (restaurant_id, space_id, rank, status) VALUES
+-- Restaurant-Spot Associations
+INSERT INTO restaurant_spot (restaurant_id, spot_id, rank, status) VALUES
 (1, 1, 1, 'active'),
 (2, 1, 2, 'active'),
-(3, 2, 1, 'active'),
-(4, 3, 1, 'active');
+(3, 2, 1, 'active');
 ```
 
 ---
@@ -527,25 +530,25 @@ All platform controllers follow the same structure:
 namespace App\Http\Controllers\Api\{Platform};
 
 use App\Http\Controllers\Controller;
-use App\Models\Space\Space;
-use App\Http\Resources\Space\SpaceResource;
+use App\Models\Spot\Spot;
+use App\Http\Resources\Spot\SpotResource;
 use App\Http\Resources\Restaurant\RestaurantShortResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
-class SpaceController extends Controller
+class SpotController extends Controller
 {
-    // List active spaces with pagination
+    // List active spots with pagination
     public function index(Request $request) { /* ... */ }
     
-    // Get space by slug
+    // Get spot by slug
     public function showBySlug($slug) { /* ... */ }
     
-    // Get restaurants for space
-    public function restaurantsBySpace($slug) { /* ... */ }
+    // Get restaurants for spot
+    public function restaurantsBySpot($slug) { /* ... */ }
     
-    // Get top 10 restaurants for space
-    public function top10RestaurantsBySpace($slug) { /* ... */ }
+    // Get top 10 restaurants for spot
+    public function top10RestaurantsBySpot($slug) { /* ... */ }
     
     // Test endpoint (no auth)
     public function test(Request $request) { /* ... */ }
@@ -561,30 +564,30 @@ Each platform has its own route file:
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\SetLocale;
-use App\Http\Controllers\Api\{Platform}\SpaceController;
+use App\Http\Controllers\Api\{Platform}\SpotController;
 
 // Public test endpoints
 Route::middleware([SetLocale::class])->group(function () {
-    Route::get('/spaces/test', [SpaceController::class, 'test']);
+    Route::get('/spots/test', [SpotController::class, 'test']);
 });
 
 // Protected routes (auth required for kiosk/android/ios)
 Route::middleware(['auth:sanctum', SetLocale::class])->group(function () {
-    Route::prefix('spaces')
-        ->name('{platform}.spaces.')
-        ->controller(SpaceController::class)
+    Route::prefix('spots')
+        ->name('{platform}.spots.')
+        ->controller(SpotController::class)
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/{slug}', 'showBySlug')->name('showBySlug');
-            Route::get('/{slug}/restaurants', 'restaurantsBySpace')->name('restaurants');
-            Route::get('/{slug}/restaurants/top10', 'top10RestaurantsBySpace')->name('restaurants.top10');
+            Route::get('/{slug}/restaurants', 'restaurantsBySpot')->name('restaurants');
+            Route::get('/{slug}/restaurants/top10', 'top10RestaurantsBySpot')->name('restaurants.top10');
         });
 });
 ```
 
 ### 3. Resource Implementation
 
-SpaceResource handles locale-specific responses:
+SpotResource handles locale-specific responses:
 
 ```php
 public function toArray($request)
@@ -623,13 +626,13 @@ public function toArray($request)
 ### 4. Key Implementation Features
 
 #### Status Management
-- Only `active` spaces are returned in listings
+- Only `active` spots are returned in listings
 - Restaurant associations also check `active` status
 - Supports `maintenance` mode for future use
 
 #### Ranking System
-- Spaces ordered by `rank` (ascending)
-- Restaurants within spaces ordered by `rank` (ascending)
+- Spots ordered by `rank` (ascending)
+- Restaurants within spots ordered by `rank` (ascending)
 - Top 10 feature respects ranking
 
 #### Error Handling
@@ -647,29 +650,31 @@ public function toArray($request)
 ## 📚 Additional Resources
 
 ### Related Documentation
-- `docs/README.md` - Complete API documentation
-- `docs/QUICK-REFERENCE.md` - API quick reference 
-- `docs/SPOTS-MODULE-INSTRUCTIONS.md` - Similar module implementation
-- `docs/POSTMAN-IMPORT-GUIDE.md` - Postman setup instructions
-- `docs/Collection/` - Postman collection files
+- [Module Architecture Overview](../README.md) - Complete module structure guide
+- [API Main Documentation](../../../README.md) - Complete API documentation
+- [Quick Reference Guide](../../../QUICK-REFERENCE.md) - API quick reference 
+- [Spaces Module Instructions](../spaces/SPACES-MODULE-INSTRUCTIONS.md) - Similar module implementation
+- [Postman Import Guide](../../../POSTMAN-IMPORT-GUIDE.md) - Postman setup instructions
+- [Postman Collections](../../../Collection/) - Postman collection files
 
 ### Key Files to Review
-- `app/Models/Space/Space.php` - Main data model
-- `app/Http/Resources/Space/SpaceResource.php` - API response formatting  
+- `app/Models/Spot/Spot.php` - Main data model
+- `app/Http/Resources/Spot/SpotResource.php` - API response formatting  
 - `routes/Api/*.php` - Platform-specific routes
-- `app/Http/Controllers/Api/*/SpaceController.php` - Platform controllers
+- `app/Http/Controllers/Api/*/SpotController.php` - Platform controllers
+- [Module Architecture Overview](../README.md) - Development patterns and guidelines
 
 ---
 
 ## 🎯 Summary
 
-The Spaces Module provides a robust, multi-platform solution for location-based restaurant discovery with:
+The Spots Module provides a robust, multi-platform solution for location-based restaurant discovery with:
 
 ✅ **Consistent API** across all platforms  
 ✅ **Flexible authentication** (required vs public access)  
 ✅ **Multi-language support** with translations  
 ✅ **SEO-friendly** slug-based routing  
-✅ **Comprehensive testing** capability  
+✅ **Comprehensive testing** with Postman collection  
 ✅ **Scalable architecture** for future enhancements  
 
-The module is fully implemented and ready for production use across Kiosk, Android, iOS, and Website platforms, following the same proven pattern as the Spots module.
+The module is fully implemented and ready for production use across Kiosk, Android, iOS, and Website platforms.
