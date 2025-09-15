@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use App\Models\Restaurant\Restaurant;
 use App\Models\Place\Place;
 
@@ -49,7 +48,7 @@ class Table extends Model
         'status' => 'integer',
         'seats' => 'integer',
         'capacity' => 'integer',
-        'rank' => 'integer',
+        'rank' => 'int',  // More concise for tinyInteger fields
         'restaurant_id' => 'integer',
         'place_id' => 'integer',
         'latitude' => 'decimal:8',
@@ -72,13 +71,6 @@ class Table extends Model
         static::updating(function ($table) {
             if (Auth::check()) {
                 $table->updated_by = Auth::id();
-            }
-        });
-
-        static::saved(function ($table) {
-            if (empty($table->slug)) {
-                $table->slug = $table->generateSlug();
-                $table->saveQuietly();
             }
         });
     }
@@ -164,21 +156,6 @@ class Table extends Model
     /**
      * Accessors
      */
-
-    /**
-     * Get the route key for the model
-     */
-    public function getRouteKeyName(): string
-    {
-        $request = request();
-        
-        // Check if we're in an admin context or API context
-        if ($request && ($request->is('admin/*') || $request->is('api/admin/*'))) {
-            return 'id';
-        }
-        
-        return 'slug';
-    }
 
     /**
      * Check if table is active
@@ -270,15 +247,6 @@ class Table extends Model
     /**
      * Methods
      */
-
-    /**
-     * Generate slug from name
-     */
-    public function generateSlug(): string
-    {
-        $name = $this->getTranslation('name', 'en') ?? $this->getTranslation('name', 'ka') ?? 'table';
-        return Str::slug($name) . '-' . $this->id;
-    }
 
     /**
      * Get all available statuses

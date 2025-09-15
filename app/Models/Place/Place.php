@@ -5,7 +5,6 @@ namespace App\Models\Place;
 use Illuminate\Database\Eloquent\Model;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Str;
 use App\Models\Restaurant\Restaurant;
 use App\Models\Table\Table;
 
@@ -36,7 +35,7 @@ class Place extends Model
     // Cast attributes
     protected $casts = [
         'status' => 'integer',
-        'rank' => 'integer',
+        'rank' => 'int',  // More concise for tinyInteger fields
         'restaurant_id' => 'integer',
     ];
 
@@ -93,21 +92,6 @@ class Place extends Model
      */
 
     /**
-     * Get the route key for the model
-     */
-    public function getRouteKeyName(): string
-    {
-        $request = request();
-        
-        // Check if we're in an admin context or API context
-        if ($request && ($request->is('admin/*') || $request->is('api/admin/*'))) {
-            return 'id';
-        }
-        
-        return 'slug';
-    }
-
-    /**
      * Check if place is active
      */
     public function getIsActiveAttribute(): bool
@@ -123,11 +107,11 @@ class Place extends Model
         if ($this->image_link) {
             return $this->image_link;
         }
-        
+
         if ($this->image) {
             return asset('storage/' . $this->image);
         }
-        
+
         return null;
     }
 
@@ -139,39 +123,11 @@ class Place extends Model
         if ($this->qr_code_link) {
             return $this->qr_code_link;
         }
-        
+
         if ($this->qr_code_image) {
             return asset('storage/' . $this->qr_code_image);
         }
-        
+
         return null;
-    }
-
-    /**
-     * Methods
-     */
-
-    /**
-     * Generate slug from name
-     */
-    public function generateSlug(): string
-    {
-        $name = $this->getTranslation('name', 'en') ?? $this->getTranslation('name', 'ka') ?? 'place';
-        return Str::slug($name) . '-' . $this->id;
-    }
-
-    /**
-     * Auto-generate slug on save if not provided
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::saved(function ($place) {
-            if (empty($place->slug)) {
-                $place->slug = $place->generateSlug();
-                $place->saveQuietly();
-            }
-        });
     }
 }
