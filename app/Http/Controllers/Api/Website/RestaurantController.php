@@ -330,19 +330,24 @@ class RestaurantController extends Controller
         try {
             $restaurant = Restaurant::where('slug', $slug)
                 ->where('status', Restaurant::STATUS_ACTIVE)
-                ->with('tables')
                 ->firstOrFail();
+
+            $tables = Table::with(['restaurant', 'place', 'translations'])
+                ->byRestaurant($restaurant->id)
+                ->available()
+                ->orderByRank('asc')
+                ->get();
 
             return response()->json([
                 'data' => [
                     'restaurant' => RestaurantShortResource::make($restaurant),
-                    'tables' => $restaurant->tables ?? []
+                    'tables' => TableShortResource::collection($tables)
                 ]
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Restaurant not found'], 404);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to fetch Restaurant', 'message' => $e->getMessage()], 500);
+            return response()->json(['error' => 'Failed to fetch tables', 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -354,12 +359,15 @@ class RestaurantController extends Controller
         try {
             $restaurant = Restaurant::where('slug', $slug)
                 ->where('status', Restaurant::STATUS_ACTIVE)
-                ->with(['tables' => function ($q) use ($table) {
-                    $q->where('id', $table)->orWhere('slug', $table);
-                }])
                 ->firstOrFail();
 
-            $tableModel = $restaurant->tables->first();
+            $tableModel = Table::with(['restaurant', 'place', 'translations'])
+                ->byRestaurant($restaurant->id)
+                ->where(function($query) use ($table) {
+                    $query->where('id', $table)->orWhere('slug', $table);
+                })
+                ->available()
+                ->first();
 
             if (!$tableModel) {
                 return response()->json(['error' => 'Table not found'], 404);
@@ -368,7 +376,7 @@ class RestaurantController extends Controller
             return response()->json([
                 'data' => [
                     'restaurant' => RestaurantShortResource::make($restaurant),
-                    'table' => $tableModel
+                    'table' => new TableResource($tableModel)
                 ]
             ]);
         } catch (ModelNotFoundException $e) {
