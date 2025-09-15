@@ -1,0 +1,113 @@
+{
+	"info": {
+		"name": "FOODLY API Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login Kiosk",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"{{test_user_email}}\",\n  \"password\": \"{{test_user_password}}\",\n  \"client\": \"kiosk\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "login"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Kiosk Spots",
+			"item": [
+				{
+					"name": "Get All Spots",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/kiosk/spots",
+							"host": ["{{base_url}}"],
+							"path": ["api", "kiosk", "spots"]
+						}
+					}
+				},
+				{
+					"name": "Get Spot by Slug",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/kiosk/spots/{{spot_slug}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "kiosk", "spots", "{{spot_slug}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Restaurants by Spot",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/kiosk/spots/{{spot_slug}}/restaurants",
+							"host": ["{{base_url}}"],
+							"path": ["api", "kiosk", "spots", "{{spot_slug}}", "restaurants"]
+						}
+					}
+				},
+				{
+					"name": "Get Top 10 Restaurants by Spot",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/kiosk/spots/{{spot_slug}}/restaurants/top10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "kiosk", "spots", "{{spot_slug}}", "restaurants", "top10"]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://api.foodlyapp.ge"
+		}
+	]
+}

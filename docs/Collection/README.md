@@ -1,76 +1,119 @@
-# 📮 FOODLY API - Postman Collection
+# � FOODLY API Collection - Complete Import Kit
 
-> **Ready-to-use Postman collections and environments for FOODLY API testing**
+> **Everything you need to quickly import and test the FOODLY API in Postman**
 
-## 📁 Files in this folder
+## 📁 Files Overview
 
-### Environment Files
-- **`FOODLY-API-Production.postman_environment.json`** - Production environment
-- **`FOODLY-API-Locale.postman_environment.json`** - Local development environment
+### 📋 Collection Files
+- **`FOODLY-API-Complete.postman_collection.json`** - Complete collection with all endpoints
+  - 🔐 Authentication (Login/Register/Logout)
+  - 🧪 Public test endpoints (Kiosk, Android, iOS)
+  - 🔒 Protected endpoints with full platform support
+  - 📍 Kiosk spots management (Get by slug, restaurants, top 10)
+  - 🍽️ Restaurant endpoints for all platforms
 
-### Collection Files
-The main collection file is located in the parent `docs/` directory:
-- **`../FOODLY-API-Collection.postman_collection.json`** - Latest API collection with all endpoints
+### 🌍 Environment Files
+- **`FOODLY-API-Locale.postman_environment.json`** - Local development (ka locale)
+- **`FOODLY-API-Production.postman_environment.json`** - Production server (en locale)
+- **`FOODLY-API-Staging.postman_environment.json`** - Staging/Testing (ka locale)
 
-> **Note**: This collection includes all the latest kiosk spots endpoints and organized folder structure.
+## 🎯 Quick Import Guide
 
-## 🚀 Quick Setup
-
-### 1. Import Environment
+### Step 1: Import Collection
 1. Open Postman
-2. Click **Import** → **Upload Files**
-3. Select either:
-   - `FOODLY-API-Production.postman_environment.json` (for production testing)
-   - `FOODLY-API-Locale.postman_environment.json` (for local development)
+2. Click **Import** button
+3. Select `FOODLY-API-Complete.postman_collection.json`
+4. Collection will appear with organized folders
 
-### 2. Import Collection
-1. Navigate to parent folder: `../`
-2. Import `FOODLY-API-Collection.postman_collection.json`
+### Step 2: Import Environment
+Choose one environment based on your needs:
+- **Locale** - For local development testing
+- **Production** - For live API testing
+- **Staging** - For staging environment
 
-### 3. Activate Environment
-1. Select imported environment from dropdown (top-right)
-2. Verify `base_url` shows correct URL:
-   - **Production**: `https://api.foodlyapp.ge`
-   - **Local**: `http://localhost:8000`
+1. Click **Import** button again
+2. Select desired environment file
+3. Set as active environment in top-right dropdown
 
-## 🔧 Environment Comparison
+### Step 3: Test Authentication
+1. Go to **🔐 Authentication** folder
+2. Run **Login User (Kiosk)** request
+3. Token will auto-save to environment
+4. All other requests now work automatically!
 
-| Variable | Production | Local Development |
-|----------|------------|-------------------|
-| `base_url` | `https://api.foodlyapp.ge` | `http://localhost:8000` |
-| `test_user_email` | `davit@foodlyapp.ge` | `test@foodlyapp.ge` |
-| `test_user_password` | `Paroli_321!` | `password123` |
-| `spot_slug` | `restaurant` | `test-spot` |
-| `locale` | - | `ka` (Georgian) |
-| `fallback_locale` | - | `en` (English) |
+## 🔧 Environment Variables
 
-## 📋 Available Endpoints
+### Auto-Set Variables (after login)
+- `auth_token` - Bearer token for API calls
+- `user_id` - Logged in user ID
+- `user_email` - User email address
+- `client_type` - Platform type (kiosk/android/ios)
 
-### 🔐 Authentication
-- User registration
-- User login (all platforms)
-- User logout
+### Manual Configuration
+- `base_url` - API server URL
+- `locale` - Language code (ka, en, ru, tr)
+- `test_user_email` - Test account email
+- `test_user_password` - Test account password
+- `spot_slug` - Example spot for testing
 
-### 🏢 Kiosk Platform
-- **📍 Spots**: List, Get by slug, Get restaurants by spot, Top 10 restaurants
-- **🍽️ Restaurants**: List all restaurants
+## 🏢 Platform Support
 
-### 📱 Mobile Platforms
-- **Android Platform**: Restaurant endpoints
-- **🍎 iOS Platform**: Restaurant endpoints
+### Kiosk Platform
+- Complete spot management
+- Restaurant listings
+- Top 10 restaurants by spot
+- Georgian locale support
 
-### 🧪 Public Test Endpoints
-- No authentication required
-- Platform health checks
+### Android Platform
+- Restaurant endpoints
+- English locale default
 
-## 🌍 Supported Locales
-- **🇬🇪 Georgian** (`ka`) - Default for kiosk
-- **🇺🇸 English** (`en`) - Fallback language
-- **🇷🇺 Russian** (`ru`) - iOS examples
-- **🇹🇷 Turkish** (`tr`) - Available for testing
+### iOS Platform  
+- Restaurant endpoints
+- Russian locale support
+
+## 🧪 Testing Features
+
+### Global Scripts
+- ⏱️ Response time validation
+- 📄 Content-Type checking
+- 🔑 Token presence verification
+- 📊 Data structure validation
+
+### Test Results
+Each request includes automated tests for:
+- ✅ Successful response codes
+- 📊 Data structure validation
+- 🎫 Authentication token handling
+- 📍 Platform-specific responses
+
+## 🚦 Usage Examples
+
+### Basic Workflow
+1. **Login** → Sets auth token automatically
+2. **Get All Spots** → View available locations
+3. **Get Spot by Slug** → Detailed spot information
+4. **Get Restaurants** → All restaurants in spot
+5. **Get Top 10** → Most popular restaurants
+
+### Multi-Platform Testing
+Test the same functionality across platforms:
+- Kiosk: Georgian locale, touch interface optimized
+- Android: English locale, mobile optimized
+- iOS: Russian locale, iOS design guidelines
+
+## 📝 Notes
+
+- All protected endpoints require authentication
+- Tokens auto-refresh on login
+- Locale parameter affects response language
+- Collection includes validation tests
+- Environment variables auto-populate
 
 ## 📞 Support
 For detailed setup instructions, see: [`../POSTMAN-IMPORT-GUIDE.md`](../POSTMAN-IMPORT-GUIDE.md)
 
 ---
-*📅 Last Updated: September 15, 2025*
+**Ready to import and test! 🎉**
+
+*📅 Last Updated: January 25, 2025*
