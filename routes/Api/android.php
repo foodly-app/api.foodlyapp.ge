@@ -5,6 +5,7 @@ use App\Http\Middleware\SetLocale;
 use App\Http\Controllers\Api\Android\RestaurantController;
 use App\Http\Controllers\Api\Android\SpotController;
 use App\Http\Controllers\Api\Android\SpaceController;
+use App\Http\Controllers\Api\Android\CuisineController;
 
 // Public test endpoint (no authentication required)
 Route::middleware([SetLocale::class])->group(function () {
@@ -40,5 +41,15 @@ Route::middleware(['auth:sanctum', SetLocale::class])->group(function () {
             Route::get('/{slug}', 'showBySlug')->name('showBySlug');
             Route::get('/{slug}/restaurants', 'restaurantsBySpace')->name('restaurants');
             Route::get('/{slug}/restaurants/top10', 'top10RestaurantsBySpace')->name('restaurants.top10');
+        });
+    
+    Route::prefix('cuisines')
+        ->name('android.cuisines.')
+        ->controller(CuisineController::class)
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{slug}', 'showBySlug')->name('showBySlug');
+            Route::get('/{slug}/restaurants', 'restaurantsByCuisine')->name('restaurants');
+            Route::get('/{slug}/restaurants/top10', 'top10RestaurantsByCuisine')->name('restaurants.top10');
         });
 });

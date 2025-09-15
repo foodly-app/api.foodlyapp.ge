@@ -61,6 +61,8 @@ docs/
 │       │   └── SPOTS-MODULE-INSTRUCTIONS.md
 │       ├── spaces/
 │       │   └── SPACES-MODULE-INSTRUCTIONS.md
+│       ├── cuisines/
+│       │   └── CUISINES-MODULE-INSTRUCTIONS.md
 │       └── README.md (this file)
 ├── Collection/                     # Postman collections
 ├── manual/                         # Manual documentation
@@ -106,6 +108,24 @@ GET /api/{platform}/spaces
 GET /api/{platform}/spaces/{slug}
 GET /api/{platform}/spaces/{slug}/restaurants
 GET /api/{platform}/spaces/{slug}/restaurants/top10
+```
+
+### 🍽️ Cuisines Module  
+**Purpose**: Restaurant discovery by cuisine type and culinary style  
+**File**: [`docs/flow/modules/cuisines/CUISINES-MODULE-INSTRUCTIONS.md`](./cuisines/CUISINES-MODULE-INSTRUCTIONS.md)
+
+**Key Features:**
+- Same architecture as Spots and Spaces modules
+- Cuisine categorization (Italian, Georgian, Asian, Mediterranean, etc.)
+- Food preference-based restaurant filtering
+- Consistent API structure across all platforms
+
+**Endpoints:**
+```
+GET /api/{platform}/cuisines
+GET /api/{platform}/cuisines/{slug}
+GET /api/{platform}/cuisines/{slug}/restaurants
+GET /api/{platform}/cuisines/{slug}/restaurants/top10
 ```
 
 ---
@@ -280,6 +300,7 @@ Each module requires:
 ### Module-Specific Docs
 - [Spots Module Instructions](./spots/SPOTS-MODULE-INSTRUCTIONS.md)
 - [Spaces Module Instructions](./spaces/SPACES-MODULE-INSTRUCTIONS.md)
+- [Cuisines Module Instructions](./cuisines/CUISINES-MODULE-INSTRUCTIONS.md)
 
 ### Development Tools
 - [Postman Collections](../../Collection/)
