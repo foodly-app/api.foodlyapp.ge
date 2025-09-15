@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Website\SpotController;
 use App\Http\Controllers\Api\Website\SpaceController;
 use App\Http\Controllers\Api\Website\CuisineController;
 use App\Http\Controllers\Api\Website\DishController;
+use App\Http\Controllers\Api\Website\CityController;
 
 // Public routes (no authentication required)
 Route::middleware([SetLocale::class])->group(function () {
@@ -61,6 +62,16 @@ Route::middleware([SetLocale::class])->group(function () {
             Route::get('/{slug}', 'showBySlug')->name('showBySlug');
             Route::get('/{slug}/restaurants', 'restaurantsByDish')->name('restaurants');
             Route::get('/{slug}/restaurants/top10', 'top10RestaurantsByDish')->name('restaurants.top10');
+        });
+
+    Route::prefix('cities')
+        ->name('website.cities.')
+        ->controller(CityController::class)
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{slug}', 'showBySlug')->name('showBySlug');
+            Route::get('/{slug}/restaurants', 'restaurantsByCity')->name('restaurants');
+            Route::get('/{slug}/restaurants/top10', 'top10RestaurantsByCity')->name('restaurants.top10');
         });
 });
 

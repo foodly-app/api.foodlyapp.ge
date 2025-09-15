@@ -65,6 +65,8 @@ docs/
 │       │   └── CUISINES-MODULE-INSTRUCTIONS.md
 │       ├── dishes/
 │       │   └── DISHES-MODULE-INSTRUCTIONS.md
+│       ├── cities/
+│       │   └── CITIES-MODULE-INSTRUCTIONS.md
 │       └── README.md (this file)
 ├── Collection/                     # Postman collections
 ├── manual/                         # Manual documentation
@@ -147,6 +149,25 @@ GET /api/website/dishes
 GET /api/website/dishes/{slug}
 GET /api/website/dishes/{slug}/restaurants
 GET /api/website/dishes/{slug}/restaurants/top10
+```
+
+### 🏙️ Cities Module  
+**Purpose**: Restaurant discovery by city and geographic location  
+**File**: [`docs/flow/modules/cities/CITIES-MODULE-INSTRUCTIONS.md`](./cities/CITIES-MODULE-INSTRUCTIONS.md)
+
+**Key Features:**
+- City-based restaurant discovery
+- Geographic location filtering
+- Restaurant associations with ranking
+- Currently implemented for Website platform only
+- Consistent API structure matching other modules
+
+**Endpoints:**
+```
+GET /api/website/cities
+GET /api/website/cities/{slug}
+GET /api/website/cities/{slug}/restaurants
+GET /api/website/cities/{slug}/restaurants/top10
 ```
 
 ---
