@@ -6,10 +6,13 @@
 ## 🚀 Quick Import Instructions
 
 ### Step 1: Download Files
-Download both files from the `docs/` folder:
+Download the collection and appropriate environment file from the `docs/` folder:
 
-1. **Collection File**: [`FOODLY-API-v2-Collection.postman_collection.json`](./FOODLY-API-v2-Collection.postman_collection.json)
-2. **Environment File**: [`FOODLY-API-Production.postman_environment.json`](./FOODLY-API-Production.postman_environment.json)
+1. **Collection File**: [`FOODLY-API-Collection.postman_collection.json`](./FOODLY-API-Collection.postman_collection.json)
+2. **Environment Files** (from `Collection/` subfolder):
+   - **Local Development**: [`Collection/FOODLY-API-Locale.postman_environment.json`](./Collection/FOODLY-API-Locale.postman_environment.json)
+   - **Production**: [`Collection/FOODLY-API-Production.postman_environment.json`](./Collection/FOODLY-API-Production.postman_environment.json)
+   - **Staging**: [`FOODLY-API-Staging.postman_environment.json`](./FOODLY-API-Staging.postman_environment.json)
 
 ### Step 2: Import to Postman
 
@@ -17,19 +20,25 @@ Download both files from the `docs/` folder:
 1. Open Postman
 2. Click **Import** button (top left)
 3. Select **Upload Files** tab
-4. Choose `FOODLY-API-v2-Collection.postman_collection.json`
+4. Choose `FOODLY-API-Collection.postman_collection.json`
 5. Click **Import**
 
 #### Import Environment
 1. Click **Import** button again
 2. Select **Upload Files** tab  
-3. Choose `FOODLY-API-Production.postman_environment.json`
+3. Choose your desired environment file from `Collection/` folder:
+   - `Collection/FOODLY-API-Locale.postman_environment.json` (for local development)
+   - `Collection/FOODLY-API-Production.postman_environment.json` (for production)
+   - `FOODLY-API-Staging.postman_environment.json` (for staging - from docs/ root)
 4. Click **Import**
 
 #### Activate Environment
 1. Look for environment dropdown (top right)
-2. Select **"FOODLY API - Production Environment"**
-3. Verify `base_url` shows `https://api.foodlyapp.ge`
+2. Select your imported environment:
+   - **"FOODLY API - Locale Development ENV"** (local: `http://localhost:8000`)
+   - **"FOODLY API - Staging ENV"** (staging: `https://staging-api.foodlyapp.ge`)
+   - **"FOODLY API - Production ENV"** (production: `https://api.foodlyapp.ge`)
+3. Verify `base_url` shows the correct URL for your environment
 
 ---
 

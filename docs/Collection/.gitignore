@@ -1,0 +1,15 @@
+# Ignore sensitive environment files with real credentials
+# Only keep template/example files in version control
+
+# Ignore personal test environments
+*personal*.json
+*local*.json
+*dev*.json
+
+# Keep only official environments
+!FOODLY-API-Production.postman_environment.json
+!FOODLY-API-Locale.postman_environment.json
+
+# Temporary Postman files
+*.tmp
+*.backup
