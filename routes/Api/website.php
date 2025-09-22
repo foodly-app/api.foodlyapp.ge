@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\Website\MenuItemController;
 use App\Http\Controllers\Api\Website\PlaceController;
 use App\Http\Controllers\Api\Website\TableController;
 use App\Http\Controllers\Api\Website\CityController;
+use App\Http\Controllers\Api\Website\UserController;
 
 // Public routes (no authentication required)
 Route::middleware([SetLocale::class])->group(function () {
@@ -154,9 +155,24 @@ Route::middleware([SetLocale::class])->group(function () {
             Route::get('/restaurant/slug/{restaurantSlug}', 'getByRestaurantSlug')->name('restaurant.slug'); // რესტორნის მაგიდები slug-ით
             Route::get('/place/{placeId}', 'getByPlace')->name('place'); // ადგილის მაგიდები
         });
+
+    Route::prefix('users')
+        ->name('website.users.')
+        ->controller(UserController::class)
+        ->group(function () {
+            Route::get('/', 'index')->name('index'); // მომხმარებლების სია
+            Route::get('/{id}', 'show')->name('show'); // კონკრეტული მომხმარებელი ID-ით
+        });
 });
 
 // Protected routes (require authentication)
-// Route::middleware(['auth:sanctum', SetLocale::class])->group(function () {
-//     // Future authenticated routes can go here
-// });
+Route::middleware(['auth:sanctum', SetLocale::class])->group(function () {
+    Route::prefix('users')
+        ->name('website.users.')
+        ->controller(UserController::class)
+        ->group(function () {
+            Route::get('/profile', 'profile')->name('profile'); // მომხმარებლის პროფილი
+            Route::post('/profile/update', 'updateProfile')->name('profile.update'); // პროფილის განახლება
+            Route::post('/profile/avatar', 'updateAvatar')->name('profile.avatar'); // ავატარის განახლება
+        });
+});
