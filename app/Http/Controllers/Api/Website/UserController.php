@@ -8,35 +8,34 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\JsonResponse;
+use App\Http\Resources\User\UserResource;
+use App\Http\Resources\User\UserCollection;
+use App\Http\Resources\User\UserProfileResource;
 
 class UserController extends Controller
 {
     /**
      * მომხმარებლების სია
      */
-    public function index(): JsonResponse
+    public function index()
     {
-        $users = User::select(['id', 'name', 'email', 'avatar', 'created_at'])
-            ->paginate(20);
-
-        return response()->json($users);
+        $users = User::paginate(20);
+        return new UserCollection($users);
     }
 
     /**
      * კონკრეტული მომხმარებელი ID-ით
      */
-    public function show($id): JsonResponse
+    public function show($id)
     {
-        $user = User::select(['id', 'name', 'email', 'avatar', 'created_at'])
-            ->findOrFail($id);
-
-        return response()->json($user);
+        $user = User::findOrFail($id);
+        return new UserResource($user);
     }
 
     /**
      * მომხმარებლის პროფილი
      */
-    public function profile(): JsonResponse
+    public function profile()
     {
         $user = Auth::user();
         
@@ -44,7 +43,7 @@ class UserController extends Controller
             return response()->json(['message' => 'მომხმარებელი არ არის ავტორიზებული'], 401);
         }
 
-        return response()->json($user);
+        return new UserProfileResource($user);
     }
 
     /**
@@ -67,7 +66,7 @@ class UserController extends Controller
 
         return response()->json([
             'message' => 'პროფილი წარმატებით განახლდა',
-            'user' => $user->fresh()
+            'user' => new UserProfileResource($user->fresh())
         ]);
     }
 

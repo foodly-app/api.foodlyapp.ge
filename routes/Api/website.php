@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\Website\PlaceController;
 use App\Http\Controllers\Api\Website\TableController;
 use App\Http\Controllers\Api\Website\CityController;
 use App\Http\Controllers\Api\Website\UserController;
+use App\Http\Controllers\Api\AuthController;
 
 // Public routes (no authentication required)
 Route::middleware([SetLocale::class])->group(function () {
@@ -161,8 +162,14 @@ Route::middleware([SetLocale::class])->group(function () {
         ->controller(UserController::class)
         ->group(function () {
             Route::get('/', 'index')->name('index'); // მომხმარებლების სია
-            Route::get('/{id}', 'show')->name('show'); // კონკრეტული მომხმარებელი ID-ით
+            Route::get('/{id}', 'show')->name('show')->where('id', '[0-9]+'); // კონკრეტული მომხმარებელი ID-ით (მხოლოდ რიცხვები)
         });
+});
+
+// Website authentication routes
+Route::prefix('auth')->group(function () {
+    Route::post('/login', [AuthController::class, 'login'])
+        ->name('website.auth.login');
 });
 
 // Protected routes (require authentication)
