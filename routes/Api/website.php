@@ -111,7 +111,7 @@ Route::middleware([SetLocale::class])->group(function () {
             Route::get('/slug/{slug}', 'showBySlug')->name('show.slug'); // კონკრეტული კატეგორია slug-ით
             Route::get('/{id}/children', 'getChildren')->name('children'); // კატეგორიის შვილები
             Route::get('/{id}/breadcrumb', 'getBreadcrumb')->name('breadcrumb'); // ნავიგაციის გზა
-            Route::get('/restaurant/{slug}', 'getByRestaurant')->name('restaurant'); // რესტორნის კატეგორიები
+            Route::get('/restaurant/{slug}', 'getByRestaurant')->name('restaurant'); // რესტორნის კატეგორები
             Route::get('/restaurant/{slug}/items', 'getRestaurantCategoryItems')->name('restaurant.items'); // რესტორნის კატეგორიები მენიუ ელემენტებით
         });
 
@@ -168,8 +168,11 @@ Route::middleware([SetLocale::class])->group(function () {
 
 // Website authentication routes
 Route::prefix('auth')->group(function () {
-    Route::post('/login', [AuthController::class, 'login'])
-        ->name('website.auth.login');
+    Route::post('/register', [\App\Http\Controllers\Api\Website\AuthController::class, 'register'])->name('website.auth.register');
+    Route::post('/login', [\App\Http\Controllers\Api\Website\AuthController::class, 'login'])->name('website.auth.login');
+    Route::post('/forgot-password', [\App\Http\Controllers\Api\Website\AuthController::class, 'forgotPassword'])->name('website.auth.forgot');
+    Route::post('/reset-password', [\App\Http\Controllers\Api\Website\AuthController::class, 'resetPassword'])->name('website.auth.reset');
+    Route::middleware('auth:sanctum')->post('/logout', [\App\Http\Controllers\Api\Website\AuthController::class, 'logout'])->name('website.auth.logout');
 });
 
 // Protected routes (require authentication)
