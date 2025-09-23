@@ -70,6 +70,22 @@
             font-size: 0.75em;
             font-weight: bold;
         }
+        .method-post {
+            background-color: #2980b9; /* blue */
+            color: white;
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+        .method-delete {
+            background-color: #c0392b; /* red */
+            color: white;
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
         .endpoint-section {
             background: #ecf0f1;
             padding: 20px;
@@ -129,6 +145,99 @@
         <h1>🌐 Website API</h1>
         
         <p>Website API გამოიყენება ვებსაიტისთვის და შეიცავს ყველა საჯარო endpoint-ს. ძირითადი ფუნქციონალი მოიცავს რესტორნების, მენიუს, მაგიდებისა და სხვა რესურსების მართვას.</p>
+
+        <h2 id="users">👤 Users & Authentication API</h2>
+        <div class="endpoint-section">
+            <p>მომხმარებლის რეგისტრაცია, ავტორიზაცია, პროფილის მართვა და CRUD ოპერაციები ვებსაიტისთვის.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Method</th>
+                        <th style="width: 350px;">Endpoint</th>
+                        <th>აღწერა</th>
+                        <th style="width: 100px;">Auth</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="method-get">GET</span></td>
+                        <td><span class="endpoint-url">/api/website/users/</span></td>
+                        <td>ყველა მომხმარებლის სია</td>
+                        <td>არა</td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-get">GET</span></td>
+                        <td><span class="endpoint-url">/api/website/users/{id}</span></td>
+                        <td>კონკრეტული მომხმარებლის ნახვა</td>
+                        <td>არა</td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-get">GET</span></td>
+                        <td><span class="endpoint-url">/api/website/users/profile</span></td>
+                        <td>ავტორიზებული მომხმარებლის პროფილი</td>
+                        <td>კი</td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-post">POST</span></td>
+                        <td><span class="endpoint-url">/api/website/users/profile/update</span></td>
+                        <td>პროფილის განახლება</td>
+                        <td>კი</td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-post">POST</span></td>
+                        <td><span class="endpoint-url">/api/website/users/profile/avatar</span></td>
+                        <td>ავატარის განახლება (multipart/form-data)</td>
+                        <td>კი</td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-delete">DELETE</span></td>
+                        <td><span class="endpoint-url">/api/website/users/{id}</span></td>
+                        <td>მომხმარებლის წაშლა</td>
+                        <td>კი</td>
+                    </tr>
+                    <tr><td colspan="4" style="background:#f8f9fa;"></td></tr>
+                    <tr>
+                        <td><span class="method-post">POST</span></td>
+                        <td><span class="endpoint-url">/api/website/auth/register</span></td>
+                        <td>რეგისტრაცია</td>
+                        <td>არა</td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-post">POST</span></td>
+                        <td><span class="endpoint-url">/api/website/auth/login</span></td>
+                        <td>ავტორიზაცია</td>
+                        <td>არა</td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-post">POST</span></td>
+                        <td><span class="endpoint-url">/api/website/auth/forgot-password</span></td>
+                        <td>პაროლის აღდგენის მოთხოვნა</td>
+                        <td>არა</td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-post">POST</span></td>
+                        <td><span class="endpoint-url">/api/website/auth/reset-password</span></td>
+                        <td>პაროლის აღდგენა (token-ით)</td>
+                        <td>არა</td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-post">POST</span></td>
+                        <td><span class="endpoint-url">/api/website/auth/logout</span></td>
+                        <td>გასვლა (Bearer token)</td>
+                        <td>კი</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="description">
+                <ul>
+                    <li>Protected endpoints საჭიროებს Bearer token-ს (auth_token).</li>
+                    <li>ავატარის განახლებისთვის გამოიყენე <b>multipart/form-data</b> და ატვირთე სურათი.</li>
+                    <li>პაროლის აღდგენის ტოკენი იხილე ლოგში ან ელფოსტაში.</li>
+                    <li>ყველა პასუხი სტანდარტიზებულია Resource კლასებით.</li>
+                    <li>სრული ტესტირებისათვის გამოიყენე <b>Postman Collection</b>: <a href="/docs/Collection/Users_API_Collection.json" download>Users_API_Collection.json</a> (ჩამოტვირთე)</li>
+                </ul>
+            </div>
+        </div>
 
         <div class="nav-sections">
             <div class="nav-section">
