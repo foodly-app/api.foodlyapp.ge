@@ -100,4 +100,14 @@ class UserController extends Controller
             'avatar_url' => Storage::url($avatarPath)
         ]);
     }
+
+    /**
+     * მომხმარებლის წაშლა
+     */
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+        return response()->json(['message' => 'მომხმარებელი წარმატებით წაიშალა']);
+    }
 }

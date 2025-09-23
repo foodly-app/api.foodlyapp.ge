@@ -2,9 +2,9 @@
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-uses(RefreshDatabase::class, DatabaseMigrations::class);
+
+uses(RefreshDatabase::class);
 
 test('api login with valid credentials returns token', function () {
     // Create test user

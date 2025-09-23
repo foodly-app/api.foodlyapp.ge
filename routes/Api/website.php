@@ -184,5 +184,6 @@ Route::middleware(['auth:sanctum', SetLocale::class])->group(function () {
             Route::get('/profile', 'profile')->name('profile'); // მომხმარებლის პროფილი
             Route::post('/profile/update', 'updateProfile')->name('profile.update'); // პროფილის განახლება
             Route::post('/profile/avatar', 'updateAvatar')->name('profile.avatar'); // ავატარის განახლება
+            Route::delete('/{id}', 'destroy')->name('destroy'); // მომხმარებლის წაშლა
         });
 });
