@@ -1,19 +1,19 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\SetLocale;
-use App\Http\Controllers\Api\Website\RestaurantController;
-use App\Http\Controllers\Api\Website\SpotController;
-use App\Http\Controllers\Api\Website\SpaceController;
+use App\Http\Controllers\Api\Website\CityController;
 use App\Http\Controllers\Api\Website\CuisineController;
 use App\Http\Controllers\Api\Website\DishController;
 use App\Http\Controllers\Api\Website\MenuCategoryController;
 use App\Http\Controllers\Api\Website\MenuItemController;
 use App\Http\Controllers\Api\Website\PlaceController;
+use App\Http\Controllers\Api\Website\ReservationController;
+use App\Http\Controllers\Api\Website\RestaurantController;
+use App\Http\Controllers\Api\Website\SpaceController;
+use App\Http\Controllers\Api\Website\SpotController;
 use App\Http\Controllers\Api\Website\TableController;
-use App\Http\Controllers\Api\Website\CityController;
 use App\Http\Controllers\Api\Website\UserController;
-use App\Http\Controllers\Api\AuthController;
+use App\Http\Middleware\SetLocale;
+use Illuminate\Support\Facades\Route;
 
 // Public routes (no authentication required)
 Route::middleware([SetLocale::class])->group(function () {
@@ -28,7 +28,7 @@ Route::middleware([SetLocale::class])->group(function () {
             Route::get('/', 'index')->name('index'); // აჩვენებს ყველა რესტორანს
             Route::get('/{slug}', 'showBySlug')->name('show'); // აჩვენებს კონკრეტულ რესტორანს slug-ით
             Route::get('/{slug}/details', 'showDetails')->name('details'); // დეტალები კონკრეტული რესტორნისთვის
-            
+
             // Places
             Route::get('/{slug}/places', 'showByPlaces')->name('places'); // ადგილები კონკრეტული რესტორნისთვის
             Route::get('/{slug}/place/{place}', 'showByPlace')->name('place.show'); // კონკრეტული ადგილის დეტალები
@@ -40,7 +40,7 @@ Route::middleware([SetLocale::class])->group(function () {
             // Tables
             Route::get('/{slug}/tables', 'showByTables')->name('tables'); // მაგიდები კონკრეტული რესტორნისთვის
             Route::get('/{slug}/table/{table}', 'showTable')->name('table.show'); // მაგიდის დეტალები კონკრეტული რესტორნისთვის
-            
+
             // Menu - ჰიერარქიული სტრუქტურა
             Route::get('/{slug}/menu', 'showMenu')->name('menu'); // რესტორნის სრული მენიუ სტრუქტურა
             Route::get('/{slug}/menu/categories', 'menuCategories')->name('menu.categories'); // რესტორნის მენიუ კატეგორიების სია
@@ -79,7 +79,6 @@ Route::middleware([SetLocale::class])->group(function () {
             Route::get('/{slug}/restaurants', 'restaurantsByCuisine')->name('restaurants');
             Route::get('/{slug}/restaurants/top10', 'top10RestaurantsByCuisine')->name('restaurants.top10');
         });
-
 
     Route::prefix('dishes')
         ->name('website.dishes.')
@@ -143,6 +142,16 @@ Route::middleware([SetLocale::class])->group(function () {
             Route::get('/restaurant/slug/{restaurantSlug}', 'getByRestaurantSlug')->name('restaurant.slug'); // რესტორნის ადგილები slug-ით
         });
 
+    Route::prefix('reservations')
+        ->name('website.reservations.')
+        ->controller(ReservationController::class)
+        ->group(function () {
+            Route::get('/', 'index')->name('index'); // რეზერვაციების სია
+            Route::get('/{id}', 'show')->name('show')->where('id', '[0-9]+'); // კონკრეტული რეზერვაცია ID-ით (მხოლოდ რიცხვები)
+            // შეზღუდული ძებნა ელექტრონული ფოსტით (email უნდა იყოს url-encoded)
+            Route::get('/email/{email}', 'getByEmail')->name('by.email');
+        });
+
     Route::prefix('tables')
         ->name('website.tables.')
         ->controller(TableController::class)
@@ -164,6 +173,7 @@ Route::middleware([SetLocale::class])->group(function () {
             Route::get('/', 'index')->name('index'); // მომხმარებლების სია
             Route::get('/{id}', 'show')->name('show')->where('id', '[0-9]+'); // კონკრეტული მომხმარებელი ID-ით (მხოლოდ რიცხვები)
         });
+
 });
 
 // Website authentication routes

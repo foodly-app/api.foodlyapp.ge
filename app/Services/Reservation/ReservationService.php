@@ -2,8 +2,9 @@
 
 namespace App\Services\Reservation;
 
-use App\Models\Reservation;
+use App\Models\Reservation\Reservation;
 use App\Events\ReservationStatusChanged;
+use App\Enums\ReservationStatus;
 use Carbon\Carbon;
 
 class ReservationService
@@ -27,12 +28,12 @@ class ReservationService
             'email' => $customerData['email'] ?? null,
             'promo_code' => $customerData['promo_code'] ?? null,
             'notes' => $customerData['notes'] ?? null,
-            'status' => 'Pending',
+            'status' => ReservationStatus::Pending,
         ]);
 
         // ✨ ახალი ფუნქციონალი - რეზერვაციის შექმნისას Email-ების გაგზავნა
         // ვგზავნით "Pending" სტატუსის შეტყობინებას შექმნის დროს
-        ReservationStatusChanged::dispatch($reservation, null, 'Pending');
+        ReservationStatusChanged::dispatch($reservation, null, ReservationStatus::Pending);
 
         return $reservation;
     }

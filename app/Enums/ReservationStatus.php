@@ -9,8 +9,8 @@ enum ReservationStatus: string
     case Confirmed = 'confirmed';   // რესტორანმა დაადასტურა
     case Cancelled = 'cancelled';   // რესტორანმა უარყო ან კლიენტმა გააუქმა
     case Paid = 'paid';             // მომხმარებელმა გადაიხადა (BOG Capture Success)
-
-        // დამატებითი საბოლოო status-ები
+    
+    // დამატებითი საბოლოო status-ები
     case Completed = 'completed';   // კლიენტი მოვიდა, რეზერვაცია წარმატებით დასრულდა
     case NoShow = 'no_show';        // გადახდილი, მაგრამ კლიენტი არ გამოჩნდა
 
@@ -47,20 +47,20 @@ enum ReservationStatus: string
      */
     public function canTransitionTo(self $newStatus): bool
     {
-        return match ([$this, $newStatus]) {
+        return match([$this, $newStatus]) {
             // ძირითადი რეზერვაციის ნაკადი
             [self::Pending, self::Confirmed] => true,
             [self::Pending, self::Cancelled] => true,
-
+            
             // გადახდის ნაკადი (მხოლოდ confirmed-დან)
             [self::Confirmed, self::Paid] => true,
             [self::Confirmed, self::Cancelled] => true,
-
+            
             // რეზერვაციის დასასრული (paid-დან)
             [self::Paid, self::Completed] => true,    // კლიენტი მოვიდა
             [self::Paid, self::NoShow] => true,       // კლიენტი არ გამოჩნდა
             [self::Paid, self::Cancelled] => true,    // refund საჭიროა
-
+            
             default => false
         };
     }
@@ -70,7 +70,7 @@ enum ReservationStatus: string
      */
     public function getLabel(): string
     {
-        return match ($this) {
+        return match($this) {
             self::Pending => 'მოლოდინში',
             self::Confirmed => 'დადასტურებული',
             self::Cancelled => 'გაუქმებული',
@@ -85,7 +85,7 @@ enum ReservationStatus: string
      */
     public function getColorClass(): string
     {
-        return match ($this) {
+        return match($this) {
             self::Pending => 'text-yellow-600 bg-yellow-100',
             self::Confirmed => 'text-blue-600 bg-blue-100',
             self::Cancelled => 'text-red-600 bg-red-100',
@@ -100,7 +100,7 @@ enum ReservationStatus: string
      */
     public function getAvailableActions(): array
     {
-        return match ($this) {
+        return match($this) {
             self::Pending => ['confirm', 'cancel'],
             self::Confirmed => ['pay', 'cancel'],
             self::Paid => ['complete', 'mark_no_show', 'refund'],

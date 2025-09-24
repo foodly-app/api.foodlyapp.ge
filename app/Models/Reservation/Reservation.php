@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Enums\ReservationStatus;
+use App\Casts\ReservationStatusCast;
 use Exception;
 
 class Reservation extends Model
@@ -31,7 +32,7 @@ class Reservation extends Model
     protected $casts = [
         'reservation_date' => 'date',
         'guests_count' => 'integer',
-        'status' => ReservationStatus::class,
+        'status' => ReservationStatusCast::class,
     ];
 
     /**
