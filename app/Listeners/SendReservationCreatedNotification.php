@@ -52,7 +52,21 @@ class SendReservationCreatedNotification implements ShouldQueue
 
         foreach ($recipients as $type => $email) {
             try {
-                Mail::to($email)->queue(new ReservationStatusMail($reservation, $status, $type));
+                switch ($type) {
+                    case 'restaurant':
+                        $mail = new \App\Mail\Restaurant\ReservationStatusMail($reservation, $status);
+                        break;
+                    case 'admin':
+                    case 'administrator':
+                        $mail = new \App\Mail\Administrator\ReservationStatusMail($reservation, $status);
+                        break;
+                    case 'client':
+                    default:
+                        $mail = new \App\Mail\Client\ReservationStatusMail($reservation, $status);
+                        break;
+                }
+
+                Mail::to($email)->queue($mail);
             } catch (\Throwable $e) {
                 Log::error('Failed to queue reservation status mail', ['reservation_id' => $reservation->id, 'email' => $email, 'error' => $e->getMessage()]);
             }

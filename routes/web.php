@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use App\Http\Controllers\DatabaseTestController;
+use App\Http\Controllers\EmailTestController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -56,9 +58,9 @@ Route::middleware(['auth'])->group(function () {
 
 require __DIR__.'/auth.php';
 
-use App\Http\Controllers\EmailTestController;
 
 // Email test routes (for local/dev only)
 Route::get('/email-test/config', [EmailTestController::class, 'showConfig'])->name('email.test.config');
 Route::get('/email-test', [EmailTestController::class, 'showForm'])->name('email.test.form');
 Route::post('/email-test/send', [EmailTestController::class, 'sendTest'])->name('email.test.send');
+Route::post('/email-test/send-all-statuses', [EmailTestController::class, 'sendAllStatuses'])->name('email.test.send_all_statuses');
